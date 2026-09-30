@@ -32,6 +32,36 @@ const CODE_B = [
 ];
 const FLOW = ["UI", "API", "AGENT", "EVIDENCE", "REPORT"];
 
+/**
+ * The faint "DHIRAJ_OS" watermark is drawn as pixel geometry (a single path) rather than text:
+ * no web font to wait for, crisp at any size, and it is not a Largest-Contentful-Paint candidate.
+ */
+const GLYPHS: Record<string, string[]> = {
+  D: ["11110", "10001", "10001", "10001", "10001", "10001", "11110"],
+  H: ["10001", "10001", "10001", "11111", "10001", "10001", "10001"],
+  I: ["11111", "00100", "00100", "00100", "00100", "00100", "11111"],
+  R: ["11110", "10001", "10001", "11110", "10100", "10010", "10001"],
+  A: ["01110", "10001", "10001", "11111", "10001", "10001", "10001"],
+  J: ["00111", "00010", "00010", "00010", "00010", "10010", "01100"],
+  _: ["00000", "00000", "00000", "00000", "00000", "00000", "11111"],
+  O: ["01110", "10001", "10001", "10001", "10001", "10001", "01110"],
+  S: ["01111", "10000", "10000", "01110", "00001", "00001", "11110"],
+};
+function pixelWord(word: string, x: number, y: number, cell: number): string {
+  let d = "";
+  [...word].forEach((ch, gi) => {
+    const rows = GLYPHS[ch];
+    if (!rows) return;
+    rows.forEach((row, r) =>
+      [...row].forEach((bit, c) => {
+        if (bit === "1") d += `M${x + (gi * 6 + c) * cell} ${y + r * cell}h${cell}v${cell}h-${cell}z`;
+      }),
+    );
+  });
+  return d;
+}
+const WATERMARK = pixelWord("DHIRAJ_OS", 250, 730, 17);
+
 export function Wallpaper() {
   return (
     <div className="wallpaper" aria-hidden="true">
@@ -52,16 +82,8 @@ export function Wallpaper() {
         <rect width="1600" height="900" fill="url(#wp-major)" />
         <rect width="1600" height="900" fill="url(#wp-glow)" />
 
-        {/* wordmark */}
-        <text
-          x="250"
-          y="860"
-          fontSize="132"
-          fill="rgba(143,180,255,0.07)"
-          style={{ fontFamily: "var(--ff-pixel), monospace", letterSpacing: "0.08em" }}
-        >
-          DHIRAJ_OS
-        </text>
+        {/* watermark */}
+        <path d={WATERMARK} fill="rgba(143,180,255,0.07)" shapeRendering="crispEdges" />
 
         {/* node mesh */}
         <g stroke="rgba(79,143,224,0.28)" strokeWidth="1">
@@ -97,7 +119,9 @@ export function Wallpaper() {
               )}
             </g>
           ))}
-          <text y="64" fill="rgba(143,180,255,0.35)">agents must cite evidence · every claim links to a source</text>
+          <text y="64" fill="rgba(143,180,255,0.35)" style={{ fontFamily: "monospace" }}>
+            agents must cite evidence · every claim links to a source
+          </text>
         </g>
 
         {/* code fragments */}
@@ -116,7 +140,7 @@ export function Wallpaper() {
         <g fontFamily="var(--ff-mono), monospace" fontSize="12" fill="rgba(77,255,136,0.32)">
           <text x="300" y="420">$ ollama run llama3.1:8b</text>
           <text x="300" y="440">$ docker compose up -d postgres</text>
-          <text x="300" y="460">$ pytest -q  # …… all passed</text>
+          <text x="300" y="460">$ pytest -q</text>
         </g>
       </svg>
     </div>

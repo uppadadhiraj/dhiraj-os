@@ -213,7 +213,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    height: 26px;
+    height: 30px;
     padding: 2px 3px 2px 5px;
     background: var(--title-inactive);
     color: #e9e9ee;
@@ -240,8 +240,9 @@
   .win-ctl {
     display: grid;
     place-items: center;
-    width: 22px;
-    height: 20px;
+    /* 24x24 meets the WCAG 2.2 minimum target size */
+    width: 24px;
+    height: 24px;
     padding: 0;
     border: 0;
     color: var(--c-black);

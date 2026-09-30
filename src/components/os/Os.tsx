@@ -45,12 +45,24 @@ function OsShell({ initialTarget }: { initialTarget?: string }) {
 
   const showBoot = booted !== "1" || rebooting;
 
-  // Open the first window once the desktop is actually visible.
+  // While the boot screen plays, fetch the first window's code so it appears instantly afterwards.
   useEffect(() => {
-    if (showBoot || openedInitial.current) return;
+    const prefetch = () => {
+      void import("@/components/apps/WelcomeApp");
+      if (initialTarget?.startsWith("project:")) void import("@/components/apps/ProjectWindow");
+    };
+    const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
+    if (w.requestIdleCallback) w.requestIdleCallback(prefetch);
+    else window.setTimeout(prefetch, 200);
+  }, [initialTarget]);
+
+  // Open the first window straight away (behind the boot overlay for first-time visitors) so it is
+  // already painted when the boot screen ends — this keeps Largest Contentful Paint early.
+  useEffect(() => {
+    if (openedInitial.current) return;
     openedInitial.current = true;
     if (!open(initialTarget ?? "welcome")) open("welcome");
-  }, [showBoot, initialTarget, open]);
+  }, [rebooting, initialTarget, open]);
 
   // Easter eggs are triggered from the terminal through a window event.
   useEffect(() => {

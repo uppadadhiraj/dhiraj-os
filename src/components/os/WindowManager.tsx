@@ -35,10 +35,15 @@ interface WmActions {
 const StateCtx = createContext<WmState | null>(null);
 const ActionsCtx = createContext<WmActions | null>(null);
 
+/** Real viewport on the client; a sensible default during server rendering (no windows exist then). */
+const measureViewport = () =>
+  typeof window === "undefined"
+    ? { w: 1280, h: 800, mobile: false }
+    : { w: window.innerWidth, h: window.innerHeight, mobile: window.innerWidth <= MOBILE_MAX };
+
 export function WindowManagerProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(wmReducer, undefined, () =>
-    initialState({ w: 1280, h: 800, mobile: false }),
-  );
+  // measured up front so the first window opened on mount is placed for the real screen size
+  const [state, dispatch] = useReducer(wmReducer, undefined, () => initialState(measureViewport()));
   // keep a ref so `open` can tell "already open" without being re-created on every change
   const stateRef = useRef(state);
   useEffect(() => {

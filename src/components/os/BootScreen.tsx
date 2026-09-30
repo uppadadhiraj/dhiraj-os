@@ -15,7 +15,7 @@ interface BootScreenProps {
   projectCount: number;
 }
 
-const STEP_MS = 280;
+const STEP_MS = 240;
 
 /**
  * A short, skippable boot sequence (~2 s). Click, any key or the Skip button ends it
