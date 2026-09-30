@@ -1,0 +1,605 @@
+{
+  "generatedAt": "2026-09-30T17:27:50.913Z",
+  "user": {
+    "login": "uppadadhiraj",
+    "name": "Dhiraj Reddy",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/144517226?v=4",
+    "htmlUrl": "https://github.com/uppadadhiraj",
+    "publicRepos": 28,
+    "followers": 8,
+    "following": 10,
+    "createdAt": "2023-09-09T06:45:08Z"
+  },
+  "repos": [
+    {
+      "name": "ScoutLens",
+      "description": "ScoutLens is an AI investigation agent that uses live web search to investigate job and internship opportunities, cross-check company and hiring signals, analyze market demand, and generate an evidence-backed report before users invest their time.",
+      "language": "Python",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-09-30T14:37:16Z",
+      "pushedAt": "2026-09-30T16:39:58Z",
+      "url": "https://github.com/uppadadhiraj/ScoutLens",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "uppadadhiraj",
+      "description": null,
+      "language": null,
+      "fork": false,
+      "archived": false,
+      "stars": 1,
+      "createdAt": "2026-03-07T11:22:05Z",
+      "pushedAt": "2026-09-30T07:13:45Z",
+      "url": "https://github.com/uppadadhiraj/uppadadhiraj",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "uppadadhiraj.github.io",
+      "description": null,
+      "language": "Astro",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-09-30T05:17:07Z",
+      "pushedAt": "2026-09-30T06:55:32Z",
+      "url": "https://github.com/uppadadhiraj/uppadadhiraj.github.io",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "ScarFlow-AI",
+      "description": null,
+      "language": "TypeScript",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-09-29T05:47:35Z",
+      "pushedAt": "2026-09-29T05:48:54Z",
+      "url": "https://github.com/uppadadhiraj/ScarFlow-AI",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "Job-Application-Tracker",
+      "description": "Track the jobs you ahve applied for at one place ",
+      "language": "Python",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-09-22T12:52:34Z",
+      "pushedAt": "2026-09-28T09:39:44Z",
+      "url": "https://github.com/uppadadhiraj/Job-Application-Tracker",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "verascope-ai",
+      "description": "AI repository intelligence & autonomous debugging platform — agents investigate bugs with cited evidence, propose fixes, validate them in a Docker sandbox, and ship via human-approved git branches and PRs",
+      "language": "Python",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-09-17T17:18:25Z",
+      "pushedAt": "2026-09-21T07:42:58Z",
+      "url": "https://github.com/uppadadhiraj/verascope-ai",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "student-management-system",
+      "description": "it is build using HTML,CSS,Java,SQL",
+      "language": "Java",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-09-21T05:36:23Z",
+      "pushedAt": "2026-09-21T05:44:02Z",
+      "url": "https://github.com/uppadadhiraj/student-management-system",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "Scraper-Chatbot",
+      "description": "This chatbot will be taking the infromation from the given website, it uses web scrapping tools to do that, only scrappable websites are allowed.",
+      "language": "Python",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-09-13T13:34:42Z",
+      "pushedAt": "2026-09-16T16:16:42Z",
+      "url": "https://github.com/uppadadhiraj/Scraper-Chatbot",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "SmartRide-AI",
+      "description": null,
+      "language": null,
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-09-13T09:35:23Z",
+      "pushedAt": "2026-09-13T09:35:24Z",
+      "url": "https://github.com/uppadadhiraj/SmartRide-AI",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "FrontierWeekHack",
+      "description": "Hands-on Microsoft Foundry hackathon labs to build, monitor, evaluate, and deploy agentic AI workflows.",
+      "language": null,
+      "fork": true,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-09-17T03:49:26Z",
+      "pushedAt": "2026-09-10T14:24:23Z",
+      "url": "https://github.com/uppadadhiraj/FrontierWeekHack",
+      "homepage": "https://microsoft.github.io/FrontierWeekHack/",
+      "topics": []
+    },
+    {
+      "name": "AI-Analytics",
+      "description": "The LLM would be doing the analysis required for the data provided and give meaningful insights and graphs.",
+      "language": "Python",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-08-25T04:06:09Z",
+      "pushedAt": "2026-08-30T14:27:20Z",
+      "url": "https://github.com/uppadadhiraj/AI-Analytics",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "Study-Buddy",
+      "description": null,
+      "language": "Python",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-08-04T12:19:54Z",
+      "pushedAt": "2026-08-10T02:32:53Z",
+      "url": "https://github.com/uppadadhiraj/Study-Buddy",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "PDF-Reader-Ollama-",
+      "description": null,
+      "language": "Python",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-07-26T11:45:58Z",
+      "pushedAt": "2026-07-26T11:51:36Z",
+      "url": "https://github.com/uppadadhiraj/PDF-Reader-Ollama-",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "AI-Interview-Coach-Ollama",
+      "description": null,
+      "language": "Python",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-07-25T08:21:28Z",
+      "pushedAt": "2026-07-26T06:06:09Z",
+      "url": "https://github.com/uppadadhiraj/AI-Interview-Coach-Ollama",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "RainFogHaze-OpenCV-GenAI",
+      "description": null,
+      "language": "Python",
+      "fork": false,
+      "archived": false,
+      "stars": 1,
+      "createdAt": "2026-02-27T04:59:42Z",
+      "pushedAt": "2026-02-27T09:00:26Z",
+      "url": "https://github.com/uppadadhiraj/RainFogHaze-OpenCV-GenAI",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "SCT_ML_1",
+      "description": null,
+      "language": "Jupyter Notebook",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2026-01-18T14:25:34Z",
+      "pushedAt": "2026-01-18T14:50:10Z",
+      "url": "https://github.com/uppadadhiraj/SCT_ML_1",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "genai-basics",
+      "description": null,
+      "language": "Jupyter Notebook",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2025-10-21T08:19:20Z",
+      "pushedAt": "2025-10-21T08:19:54Z",
+      "url": "https://github.com/uppadadhiraj/genai-basics",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "logistic-regression-from-scratch",
+      "description": null,
+      "language": "Jupyter Notebook",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2025-10-16T04:56:08Z",
+      "pushedAt": "2025-10-16T05:02:39Z",
+      "url": "https://github.com/uppadadhiraj/logistic-regression-from-scratch",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "linear-regression-from-scratch",
+      "description": null,
+      "language": "Jupyter Notebook",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2025-10-14T17:28:27Z",
+      "pushedAt": "2025-10-14T17:38:25Z",
+      "url": "https://github.com/uppadadhiraj/linear-regression-from-scratch",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "Spam-Ham-mail-checker",
+      "description": null,
+      "language": "Jupyter Notebook",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2025-10-12T13:50:22Z",
+      "pushedAt": "2025-10-12T13:55:01Z",
+      "url": "https://github.com/uppadadhiraj/Spam-Ham-mail-checker",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "Smart-Insights-of-Customer-Patters-",
+      "description": null,
+      "language": "Jupyter Notebook",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2025-10-11T06:04:43Z",
+      "pushedAt": "2025-10-11T06:08:17Z",
+      "url": "https://github.com/uppadadhiraj/Smart-Insights-of-Customer-Patters-",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "Heart-Disease-Predictor",
+      "description": null,
+      "language": "Jupyter Notebook",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2025-10-10T06:10:23Z",
+      "pushedAt": "2025-10-10T06:18:21Z",
+      "url": "https://github.com/uppadadhiraj/Heart-Disease-Predictor",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "House-Prediction",
+      "description": null,
+      "language": "Jupyter Notebook",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2025-10-09T13:03:50Z",
+      "pushedAt": "2025-10-09T13:17:03Z",
+      "url": "https://github.com/uppadadhiraj/House-Prediction",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "Titanic_Ship_Survival",
+      "description": null,
+      "language": "Jupyter Notebook",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2025-10-06T18:55:28Z",
+      "pushedAt": "2025-10-08T15:14:41Z",
+      "url": "https://github.com/uppadadhiraj/Titanic_Ship_Survival",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "Netflix-Content-EDA",
+      "description": null,
+      "language": "Jupyter Notebook",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2025-10-08T14:57:31Z",
+      "pushedAt": "2025-10-08T15:11:46Z",
+      "url": "https://github.com/uppadadhiraj/Netflix-Content-EDA",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "Iris-Predictor",
+      "description": null,
+      "language": "Jupyter Notebook",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2025-10-02T05:01:02Z",
+      "pushedAt": "2025-10-02T05:21:35Z",
+      "url": "https://github.com/uppadadhiraj/Iris-Predictor",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "Fake-News-Predictor",
+      "description": null,
+      "language": "Jupyter Notebook",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2025-10-01T08:14:47Z",
+      "pushedAt": "2025-10-02T05:13:50Z",
+      "url": "https://github.com/uppadadhiraj/Fake-News-Predictor",
+      "homepage": null,
+      "topics": []
+    },
+    {
+      "name": "Movie-Recommendations",
+      "description": null,
+      "language": "Jupyter Notebook",
+      "fork": false,
+      "archived": false,
+      "stars": 0,
+      "createdAt": "2025-09-30T17:09:50Z",
+      "pushedAt": "2025-10-02T05:13:09Z",
+      "url": "https://github.com/uppadadhiraj/Movie-Recommendations",
+      "homepage": null,
+      "topics": []
+    }
+  ],
+  "events": [
+    {
+      "id": "22579393479",
+      "type": "PushEvent",
+      "repo": "uppadadhiraj",
+      "createdAt": "2026-09-30T07:13:46Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "22574438013",
+      "type": "PushEvent",
+      "repo": "uppadadhiraj.github.io",
+      "createdAt": "2026-09-30T06:38:01Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "22573756008",
+      "type": "PushEvent",
+      "repo": "uppadadhiraj.github.io",
+      "createdAt": "2026-09-30T06:25:46Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "22570257888",
+      "type": "CreateEvent",
+      "repo": "uppadadhiraj.github.io",
+      "createdAt": "2026-09-30T05:18:07Z",
+      "ref": "main",
+      "refType": "branch"
+    },
+    {
+      "id": "16079246665",
+      "type": "PublicEvent",
+      "repo": "uppadadhiraj.github.io",
+      "createdAt": "2026-09-30T05:17:07Z",
+      "ref": null,
+      "refType": null
+    },
+    {
+      "id": "22567234649",
+      "type": "PushEvent",
+      "repo": "uppadadhiraj",
+      "createdAt": "2026-09-30T07:10:40Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "22563459461",
+      "type": "PushEvent",
+      "repo": "uppadadhiraj.github.io",
+      "createdAt": "2026-09-30T06:41:57Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "22563029761",
+      "type": "PushEvent",
+      "repo": "uppadadhiraj",
+      "createdAt": "2026-09-30T07:12:02Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "22560773824",
+      "type": "PushEvent",
+      "repo": "uppadadhiraj.github.io",
+      "createdAt": "2026-09-30T06:41:50Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "22560758087",
+      "type": "PushEvent",
+      "repo": "uppadadhiraj.github.io",
+      "createdAt": "2026-09-30T05:56:25Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "22560089732",
+      "type": "PushEvent",
+      "repo": "uppadadhiraj.github.io",
+      "createdAt": "2026-09-30T05:47:44Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "22555543384",
+      "type": "PushEvent",
+      "repo": "uppadadhiraj.github.io",
+      "createdAt": "2026-09-30T05:30:14Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "22451631375",
+      "type": "CreateEvent",
+      "repo": "ScarFlow-AI",
+      "createdAt": "2026-09-29T05:48:55Z",
+      "ref": "main",
+      "refType": "branch"
+    },
+    {
+      "id": "22374233075",
+      "type": "PushEvent",
+      "repo": "Job-Application-Tracker",
+      "createdAt": "2026-09-28T09:39:44Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "22370910079",
+      "type": "CreateEvent",
+      "repo": "Job-Application-Tracker",
+      "createdAt": "2026-09-28T09:34:34Z",
+      "ref": "main",
+      "refType": "branch"
+    },
+    {
+      "id": "21743027225",
+      "type": "PushEvent",
+      "repo": "student-management-system",
+      "createdAt": "2026-09-21T05:44:03Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "21718629270",
+      "type": "PushEvent",
+      "repo": "verascope-ai",
+      "createdAt": "2026-09-21T07:42:58Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "15411602564",
+      "type": "WatchEvent",
+      "repo": "FareedKhan-dev/train-llm-from-scratch",
+      "createdAt": "2026-09-21T07:35:37Z",
+      "ref": null,
+      "refType": null
+    },
+    {
+      "id": "21710849454",
+      "type": "CreateEvent",
+      "repo": "student-management-system",
+      "createdAt": "2026-09-21T05:40:28Z",
+      "ref": "main",
+      "refType": "branch"
+    },
+    {
+      "id": "21559631709",
+      "type": "PushEvent",
+      "repo": "verascope-ai",
+      "createdAt": "2026-09-18T13:16:50Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "21548065308",
+      "type": "CreateEvent",
+      "repo": "verascope-ai",
+      "createdAt": "2026-09-17T17:18:27Z",
+      "ref": "main",
+      "refType": "branch"
+    },
+    {
+      "id": "21500504201",
+      "type": "PushEvent",
+      "repo": "verascope-ai",
+      "createdAt": "2026-09-18T13:00:12Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "21419548110",
+      "type": "PushEvent",
+      "repo": "verascope-ai",
+      "createdAt": "2026-09-17T17:20:37Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "15191865514",
+      "type": "ForkEvent",
+      "repo": "microsoft/FrontierWeekHack",
+      "createdAt": "2026-09-17T03:49:26Z",
+      "ref": null,
+      "refType": null
+    },
+    {
+      "id": "21320200221",
+      "type": "PushEvent",
+      "repo": "Scraper-Chatbot",
+      "createdAt": "2026-09-16T16:16:43Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "21121819175",
+      "type": "PushEvent",
+      "repo": "Scraper-Chatbot",
+      "createdAt": "2026-09-14T15:31:48Z",
+      "ref": "refs/heads/main",
+      "refType": null
+    },
+    {
+      "id": "20993988079",
+      "type": "CreateEvent",
+      "repo": "Scraper-Chatbot",
+      "createdAt": "2026-09-13T13:34:45Z",
+      "ref": "main",
+      "refType": "branch"
+    },
+    {
+      "id": "20982499798",
+      "type": "CreateEvent",
+      "repo": "SmartRide-AI",
+      "createdAt": "2026-09-13T09:35:25Z",
+      "ref": "main",
+      "refType": "branch"
+    }
+  ]
+}
