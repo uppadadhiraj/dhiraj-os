@@ -24,6 +24,18 @@ describe("window manager reducer", () => {
     expect(activeId(s)).toBe("about");
   });
 
+  it("opens windows maximised on tablet-width screens, and restore returns a normal window", () => {
+    const tablet: Viewport = { w: 800, h: 1000, mobile: false };
+    let s = open(initialState(tablet), "about", { size: { w: 760, h: 520 } });
+    expect(s.windows.about.maximized).toBe(true);
+    expect(s.windows.about.rect).toEqual({ x: 0, y: 0, ...desktopArea(tablet) });
+    s = wmReducer(s, { type: "toggleMax", id: "about" });
+    expect(s.windows.about.maximized).toBe(false);
+    expect(s.windows.about.rect.w).toBeLessThanOrEqual(800 - 24);
+    // laptops and desktops keep ordinary floating windows
+    expect(open(initialState(VP), "about").windows.about.maximized).toBe(false);
+  });
+
   it("shrinks oversized windows to fit small viewports", () => {
     const small: Viewport = { w: 500, h: 400, mobile: false };
     const s = open(initialState(small), "big", { size: { w: 1200, h: 900 } });

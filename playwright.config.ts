@@ -15,7 +15,6 @@ export default defineConfig({
   reporter: [["list"]],
   use: {
     baseURL: process.env.BASE_URL ?? `http://localhost:${PORT}`,
-    channel: "chrome",
     trace: "retain-on-failure",
   },
   projects: [
@@ -29,6 +28,14 @@ export default defineConfig({
       use: { ...devices["Pixel 7"], channel: "chrome" },
       grep: /@mobile/,
     },
+    // Cross-browser smoke runs: CROSS_BROWSER=1 npx playwright test (Firefox/WebKit need `npx playwright install firefox webkit`)
+    ...(process.env.CROSS_BROWSER
+      ? [
+          { name: "edge", use: { ...devices["Desktop Edge"], channel: "msedge", viewport: { width: 1440, height: 900 } }, grepInvert: /@mobile/, testMatch: /os\.spec\.ts/ },
+          { name: "firefox", use: { ...devices["Desktop Firefox"], viewport: { width: 1440, height: 900 } }, grepInvert: /@mobile/, testMatch: /os\.spec\.ts/ },
+          { name: "webkit", use: { ...devices["Desktop Safari"], viewport: { width: 1440, height: 900 } }, grepInvert: /@mobile/, testMatch: /os\.spec\.ts/ },
+        ]
+      : []),
   ],
   webServer: process.env.BASE_URL
     ? undefined

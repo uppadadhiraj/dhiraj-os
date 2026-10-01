@@ -93,23 +93,50 @@ export const Window = memo(function Window({ win, z, active, mobile, children }:
     [mobile, win.maximized, win.rect.x, win.rect.y],
   );
 
+  // Pointer moves are coalesced to one update per animation frame, but the last one is always applied
+  // exactly on release (never lost if a frame is delayed, e.g. in a throttled background tab).
+  const pending = useRef<(() => void) | null>(null);
+  const schedule = useCallback((fn: () => void) => {
+    pending.current = fn;
+    if (!raf.current) {
+      raf.current = requestAnimationFrame(() => {
+        raf.current = 0;
+        const f = pending.current;
+        pending.current = null;
+        f?.();
+      });
+    }
+  }, []);
+  const flushPending = useCallback(() => {
+    if (raf.current) {
+      cancelAnimationFrame(raf.current);
+      raf.current = 0;
+    }
+    const f = pending.current;
+    pending.current = null;
+    f?.();
+  }, []);
+
   const onTitleMove = useCallback(
     (e: ReactPointerEvent<HTMLDivElement>) => {
       const d = drag.current;
       if (!d) return;
       const nx = d.x + (e.clientX - d.px);
       const ny = d.y + (e.clientY - d.py);
-      cancelAnimationFrame(raf.current);
-      raf.current = requestAnimationFrame(() => move(win.id, nx, ny));
+      schedule(() => move(win.id, nx, ny));
     },
-    [move, win.id],
+    [move, schedule, win.id],
   );
 
-  const endDrag = useCallback((e: ReactPointerEvent<HTMLElement>) => {
-    drag.current = null;
-    sizing.current = null;
-    if (e.currentTarget.hasPointerCapture?.(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
-  }, []);
+  const endDrag = useCallback(
+    (e: ReactPointerEvent<HTMLElement>) => {
+      flushPending();
+      drag.current = null;
+      sizing.current = null;
+      if (e.currentTarget.hasPointerCapture?.(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
+    },
+    [flushPending],
+  );
 
   const onHandleDown = (dir: Dir) => (e: ReactPointerEvent<HTMLDivElement>) => {
     if (mobile || win.maximized || e.button !== 0) return;
@@ -135,8 +162,7 @@ export const Window = memo(function Window({ win, z, active, mobile, children }:
       h = Math.max(MIN_H, s.r.h - dy);
       y = s.r.y + (s.r.h - h);
     }
-    cancelAnimationFrame(raf.current);
-    raf.current = requestAnimationFrame(() => resize(win.id, { x, y, w, h }));
+    schedule(() => resize(win.id, { x, y, w, h }));
   };
 
   const style: React.CSSProperties = mobile

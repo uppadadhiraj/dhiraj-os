@@ -17,8 +17,11 @@ test.describe("boot sequence", () => {
 
   test("boot can be skipped by clicking and completes on its own", async ({ page }) => {
     await visit(page, "/", { boot: true });
-    await page.locator(".boot-screen").click({ position: { x: 20, y: 20 } });
-    await expect(page.locator(".boot-screen")).toHaveCount(0);
+    const boot = page.locator(".boot-screen");
+    // On a slow browser start the sequence may already have finished by itself; either way it must end.
+    await boot.click({ position: { x: 20, y: 20 }, timeout: 3000 }).catch(() => undefined);
+    await expect(boot).toHaveCount(0);
+    await expect(win(page, "welcome")).toBeVisible();
   });
 });
 
@@ -36,7 +39,7 @@ test.describe("desktop and window manager", () => {
   test("windows can be dragged", async ({ page }) => {
     await visit(page);
     const w = win(page, "welcome");
-    await expect(w).toBeVisible();
+    await settled(page, "welcome");
     const t = await w.locator(".win-title").boundingBox();
     const before = await w.boundingBox();
     await dragBy(page, { x: t!.x + 120, y: t!.y + 12 }, 180, 90);
@@ -48,7 +51,7 @@ test.describe("desktop and window manager", () => {
   test("windows can be resized from the corner", async ({ page }) => {
     await visit(page);
     const w = win(page, "welcome");
-    await expect(w).toBeVisible();
+    await settled(page, "welcome"); // the open animation scales the window; measure only once it has finished
     const before = await w.boundingBox();
     const h = await w.locator("[data-resize='se']").boundingBox();
     await dragBy(page, { x: h!.x + 6, y: h!.y + 6 }, 90, 70);

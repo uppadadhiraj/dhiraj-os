@@ -6,6 +6,8 @@ export const MIN_H = 200;
 /** how much of a window's title bar must stay on screen so it can always be grabbed */
 export const KEEP_VISIBLE = 96;
 export const DEFAULT_SIZE = { w: 760, h: 520 } as const;
+/** Below this width (but above the phone layout) windows open maximised: a simplified, tablet-friendly desktop. */
+export const TABLET_MAX_W = 1024;
 
 export const desktopArea = (vp: Viewport) => ({ w: vp.w, h: Math.max(0, vp.h - TASKBAR_H) });
 
@@ -83,15 +85,19 @@ export function wmReducer(state: WmState, action: WmAction): WmState {
         };
       }
       const seq = state.seq + 1;
+      const rect = initialRect(spec, state.viewport, seq);
+      const tablet = !state.viewport.mobile && state.viewport.w < TABLET_MAX_W;
       const win: WinState = {
         id: spec.id,
         appId: spec.appId,
         props: spec.props,
         title: spec.title,
         icon: spec.icon,
-        rect: initialRect(spec, state.viewport, seq),
+        rect: tablet ? fullRect(state.viewport) : rect,
+        // restoring a tablet window returns to the normal cascaded size
+        restoreRect: tablet ? rect : undefined,
         minimized: false,
-        maximized: false,
+        maximized: tablet,
         openedAt: seq,
       };
       return {

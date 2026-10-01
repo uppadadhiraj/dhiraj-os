@@ -31,6 +31,19 @@ export async function openApp(page: Page, label: string, id: string) {
   await expect(win(page, id)).toBeVisible();
 }
 
+/** Minimise everything so the desktop icons are reachable (taskbar button on laptops, Home buttons on phones). */
+export async function showDesktop(page: Page) {
+  const show = page.getByRole("button", { name: "Show desktop" });
+  if (await show.isVisible()) {
+    await show.click();
+  } else {
+    for (const w of await page.locator("[data-win-id]").all()) {
+      const home = w.getByRole("button", { name: /^(Home|Minimize)/ });
+      if (await home.isVisible()) await home.click();
+    }
+  }
+}
+
 export async function closeAll(page: Page) {
   for (const w of await page.locator("[data-win-id]").all()) {
     await w.getByRole("button", { name: /^Close/ }).click();
