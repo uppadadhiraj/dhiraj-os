@@ -30,7 +30,7 @@ export const APPS: AppMeta[] = [
   { id: "contact", title: "Contact.exe", icon: "mail", size: { w: 580, h: 500 }, path: "contact", desktop: { label: "Contact" }, start: "main", blurb: "Email, GitHub, LinkedIn" },
   { id: "terminal", title: "Terminal — C:\\DHIRAJ", icon: "terminal", size: { w: 760, h: 500 }, path: "terminal", desktop: { label: "Terminal" }, start: "main", blurb: "A portfolio terminal: try help, neofetch" },
   { id: "sysinfo", title: "System Info", icon: "computer", size: { w: 640, h: 540 }, path: "system", start: "programs", blurb: "System information and what I'm exploring" },
-  { id: "blog", title: "DHIRAJ.LOG", icon: "notepad", size: { w: 1000, h: 680 }, path: "blog", start: "programs", blurb: "My blog, embedded" },
+  { id: "blog", title: "DHIRAJ.LOG", icon: "notepad", size: { w: 1000, h: 680 }, path: "blog", desktop: { label: "My Blog" }, start: "programs", blurb: "My blog, embedded" },
   { id: "stack", title: "STACK.exe", icon: "layers", size: { w: 940, h: 620 }, path: "stack", start: "programs", blurb: "How my technologies relate" },
   { id: "journey", title: "JOURNEY.exe", icon: "timeline", size: { w: 780, h: 620 }, path: "journey", start: "programs", blurb: "Timeline of projects and milestones" },
   { id: "howibuild", title: "HOW I BUILD.exe", icon: "gear", size: { w: 780, h: 580 }, path: "how-i-build", start: "programs", blurb: "My build workflow" },

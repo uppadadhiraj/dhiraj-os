@@ -28,10 +28,10 @@ test.describe("boot sequence", () => {
 test.describe("desktop and window manager", () => {
   test("desktop shows a short list of icons (the rest live in Start → Programs) and the taskbar", async ({ page }) => {
     const errors = await visit(page);
-    const labels = ["RUN MY PROJECTS.exe", "Projects", "About Me", "Skills", "Resume", "GitHub", "Contact", "Terminal"];
+    const labels = ["RUN MY PROJECTS.exe", "Projects", "About Me", "Skills", "Resume", "GitHub", "Contact", "My Blog", "Terminal"];
     for (const label of labels) await expect(desktopIcon(page, label)).toBeVisible();
     await expect(page.locator("nav[aria-label='Desktop applications'] a.desk-icon")).toHaveCount(labels.length);
-    for (const gone of ["Recycle Bin", "My Computer", "STACK.exe", "JOURNEY.exe", "HOW I BUILD.exe", "DHIRAJ.LOG"]) await expect(desktopIcon(page, gone)).toHaveCount(0);
+    for (const gone of ["Recycle Bin", "My Computer", "STACK.exe", "JOURNEY.exe", "HOW I BUILD.exe"]) await expect(desktopIcon(page, gone)).toHaveCount(0);
     await expect(page.getByRole("toolbar", { name: "Taskbar" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Start" })).toBeVisible();
     expect(errors).toEqual([]);
@@ -329,7 +329,7 @@ test.describe("other apps", () => {
 
   test("Blog window embeds the real blog in a sandboxed iframe", async ({ page }) => {
     await visit(page);
-    await openFromStart(page, "DHIRAJ.LOG", "blog");
+    await openApp(page, "My Blog", "blog");
     const frame = win(page, "blog").locator("iframe");
     await expect(frame).toHaveAttribute("src", "https://uppadadhiraj.github.io/");
     await expect(frame).toHaveAttribute("sandbox", /allow-scripts/);
