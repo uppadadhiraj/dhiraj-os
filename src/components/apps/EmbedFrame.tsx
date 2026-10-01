@@ -28,11 +28,15 @@ export function EmbedFrame({ url, title, appName }: { url: string; title: string
     setNonce((n) => n + 1);
   };
 
-  let host = url;
-  try {
-    host = new URL(url).host;
-  } catch {
-    /* keep raw */
+  // `/demos/…` bundles are served by this site and run in the visitor's browser (stlite/WebAssembly)
+  const inBrowser = url.startsWith("/");
+  let host = inBrowser ? "Runs in your browser (WebAssembly)" : url;
+  if (!inBrowser) {
+    try {
+      host = new URL(url).host;
+    } catch {
+      /* keep raw */
+    }
   }
 
   return (
@@ -72,7 +76,9 @@ export function EmbedFrame({ url, title, appName }: { url: string; title: string
                 <div style={{ width: "100%", animation: "boot-fill 1.6s steps(12) infinite" }} />
               </div>
               <p className="mt-3 text-[12.5px] text-[var(--c-ink-2)]">
-                Free-tier hosts sleep when idle, so the first load can take up to a minute.
+                {inBrowser
+                  ? "This app runs inside your browser, so the first load downloads the Python runtime (about 10 MB) and can take up to a minute."
+                  : "Free-tier hosts sleep when idle, so the first load can take up to a minute."}
               </p>
             </div>
           </div>

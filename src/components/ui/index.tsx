@@ -16,7 +16,7 @@ export function StatusPill({ status, className }: { status: Status; className?: 
 
 export const statusHelp: Record<Status, string> = {
   LIVE: "Deployed and exercised in a browser",
-  DEMO: "Deployed in a limited demo mode",
+  DEMO: "Runs online in a limited demo mode (see the note on the project)",
   "LOCAL ONLY": "Runs locally; not hosted publicly",
   HARDWARE: "Needs physical hardware",
   EXPERIMENTAL: "Work in progress or exploratory",

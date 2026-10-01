@@ -13,7 +13,10 @@ const modeOf = (p: Project): Mode =>
   p.demo.kind === "embed" && p.demo.url ? "live" : p.screenshots?.length ? "preview" : "local";
 
 const MODE_COPY: Record<Mode, { title: string; blurb: string }> = {
-  live: { title: "Running now", blurb: "Real deployments — the window below is the actual application, not a recording." },
+  live: {
+    title: "Running now",
+    blurb: "The actual applications, not recordings. Each card says where it runs and what the hosted copy leaves out.",
+  },
   preview: { title: "Screenshots", blurb: "Not hosted: these open a screenshot viewer from real runs. Clearly not live." },
   local: { title: "Runs locally", blurb: "Needs a local model, a database or hardware. Open the write-up for the exact run commands." },
 };

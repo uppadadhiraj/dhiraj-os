@@ -25,9 +25,18 @@ describe("project data integrity (no fabricated or dangling claims)", () => {
     for (const p of projects) {
       if (p.status === "LIVE" || p.status === "DEMO") {
         expect(p.demo.kind, `${p.slug} claims ${p.status}`).toBe("embed");
-        expect(p.demo.url, `${p.slug} needs a URL`).toMatch(/^https:\/\//);
+        expect(p.demo.url, `${p.slug} needs a URL`).toMatch(/^(https:\/\/|\/demos\/)/);
       }
     }
+  });
+
+  it("self-hosted demos (/demos/…) point at a bundle that exists in public/", () => {
+    for (const p of projects)
+      if (p.demo.url?.startsWith("/demos/")) {
+        const file = resolve(process.cwd(), "public", p.demo.url.replace(/^\//, ""));
+        expect(existsSync(file), `${p.slug}: ${p.demo.url}`).toBe(true);
+        expect(existsSync(resolve(file, "..", "app")), `${p.slug}: app files`).toBe(true);
+      }
   });
 
   it("embedded demos never point at localhost", () => {

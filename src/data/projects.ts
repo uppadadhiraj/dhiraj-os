@@ -157,7 +157,7 @@ export const projects: Project[] = [
       "Investigate a job or internship before you invest your time — live SerpApi searches, an evidence store, and a report where every claim links to a real source.",
     category: "important",
     featured: true,
-    status: "LOCAL ONLY",
+    status: "DEMO",
     development: "ai-assisted",
     devNote:
       "Designed and built with Claude Code as an AI pair-programmer — disclosed in the README and in every commit trailer.",
@@ -230,6 +230,7 @@ export const projects: Project[] = [
       { label: "Code", value: "≈13.3k lines of Python across 34 test files and 100+ modules" },
       { label: "Tests", value: "592 tests, all passing when re-run on 2026-09-30 — no network or API key needed" },
       { label: "Live check", value: "README: verified on two real listings on 2026-09-30" },
+      { label: "Hosted demo", value: "Public-demo build (PUBLIC_DEMO=1), commit afdffe8 on branch feature/public-demo-mode, run in the browser with stlite 1.9.2" },
     ],
     screenshots: [
       { src: "/projects/scoutlens/01-home.webp", alt: "ScoutLens home screen with a URL field and a Try the demo button" },
@@ -240,11 +241,12 @@ export const projects: Project[] = [
       { src: "/projects/scoutlens/07-report-evidence-method.webp", alt: "ScoutLens evidence and method tab listing every search" },
     ],
     demo: {
-      kind: "none",
-      note: "Live investigations need a SerpApi key. The demo replays recorded responses for a fictional company.",
+      kind: "embed",
+      url: "/demos/scoutlens/index.html",
+      note: "The real Streamlit app, running inside your browser (WebAssembly) in public-demo mode: it replays recorded responses for a fictional company. The URL and résumé inputs are hidden, nothing is stored and no API key is involved. The first load downloads the Python runtime (about 10 MB).",
     },
     verification:
-      "Run locally on 2026-09-30 (Python 3.11): the full test suite passed (592 of 592); the demo investigation completes every stage and renders the report with the Demo-data label; no console errors and no horizontal overflow at 390 px.",
+      "Run locally on 2026-09-30 (Python 3.11): the full test suite passed (592 of 592; 597 with the five public-demo tests added on 2026-10-01); the demo investigation completes every stage and renders the report with the Demo-data label; no console errors and no horizontal overflow at 390 px. The hosted copy is the same code in PUBLIC_DEMO mode (branch feature/public-demo-mode) running under stlite 1.9.2; its demo investigation, report and closed History tab were checked in Chrome on 2026-10-01.",
     needs: ["Python 3.11+", "A SerpApi key for live investigations (not needed for the demo)", "Ollama or an OpenAI-compatible API is optional"],
     runLocally: [
       "git clone https://github.com/uppadadhiraj/ScoutLens.git && cd ScoutLens",
@@ -593,7 +595,7 @@ export const projects: Project[] = [
       "Paste a news-article URL; a TF-IDF + logistic-regression model trained on an Indian fake-news dataset labels it FAKE or REAL with a confidence score.",
     category: "built",
     featured: false,
-    status: "LOCAL ONLY",
+    status: "DEMO",
     development: "unconfirmed",
     devNote: "Repository has no AI-assistance markers; development method not yet labelled.",
     repo: "Fake-News-Predictor",
@@ -642,6 +644,7 @@ export const projects: Project[] = [
       { label: "Data", value: "3,729 labelled articles (1,877 FAKE, 1,852 REAL); 8 empty texts dropped" },
       { label: "Split", value: "80/20, random_state 42 → 2,976 train, 745 test" },
       { label: "Re-measured", value: "99.5% test accuracy (360/1 and 3/381 confusion), 2026-09-30 — see the leakage note below" },
+      { label: "Hosted demo", value: "Paste-text copy, commit 0f34ffc on branch deploy/safe-url-fetch, run in the browser with stlite 1.9.2" },
     ],
     screenshots: [
       {
@@ -651,11 +654,12 @@ export const projects: Project[] = [
       },
     ],
     demo: {
-      kind: "none",
-      note: "Not hosted yet.",
+      kind: "embed",
+      url: "/demos/fake-news/index.html",
+      note: "The repo's real model and app code, running inside your browser (WebAssembly). A browser can't download other sites' pages, so this copy scores text you paste (two example buttons are provided); the link-fetching version runs locally. It scores writing style, not truth — read the reliability note at the bottom of the app.",
     },
     verification:
-      "Run locally on 2026-09-30 (Python 3.11, scikit-learn 1.9.1 loading the repo's 1.6.1 pickles): the app loads, returns a label and confidence for a URL, and shows readable errors for a malformed URL and an unreachable host; test-split accuracy and top features re-measured from the saved model.",
+      "Run locally on 2026-09-30 (Python 3.11, scikit-learn 1.9.1 loading the repo's 1.6.1 pickles): the app loads, returns a label and confidence for a URL, and shows readable errors for a malformed URL and an unreachable host; test-split accuracy and top features re-measured from the saved model. The hosted copy (branch deploy/safe-url-fetch, commit 0f34ffc) runs in the browser under scikit-learn 1.7.0 and gave the same labels and confidences as the local run on both example texts (FAKE 0.99, REAL 0.88), checked on 2026-10-01.",
     needs: ["Python 3.11+", "Internet access (to download the article)"],
     runLocally: [
       "git clone https://github.com/uppadadhiraj/Fake-News-Predictor.git && cd Fake-News-Predictor/App",
