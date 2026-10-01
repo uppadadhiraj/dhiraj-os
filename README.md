@@ -5,7 +5,7 @@ windows, a taskbar and Start menu, a working terminal, and projects you can open
 actually hosted) run. The look is an original Windows 95/98-inspired design (no vendor artwork or branding);
 the engineering underneath is modern, typed and tested.
 
-**Live site:** see the deployment section below · **Blog:** <https://uppadadhiraj.github.io/>
+**Live site:** <https://dhiraj-os-rho.vercel.app> · **Blog:** <https://uppadadhiraj.github.io/>
 
 ## The idea
 
@@ -102,11 +102,38 @@ npx vercel --prod
 `VERCEL_PROJECT_PRODUCTION_URL` (set by Vercel) is used for canonical URLs, the sitemap and Open Graph tags;
 set `NEXT_PUBLIC_SITE_URL` to override it (for example once a custom domain exists).
 
+After a deploy, check the live site:
+
+```bash
+node scripts/check-demos.mjs                                   # demo URLs, framing headers, every bundle file is served
+BASE_URL=https://dhiraj-os-rho.vercel.app npx playwright test  # full suite, including the embedded demos
+```
+
+### Hosted demos (`public/demos/`)
+
+Two projects are Streamlit apps. Rather than run a server (free tiers sleep, and Hugging Face's free tier has no
+Streamlit/Docker option), they are packaged with [stlite](https://github.com/whitphx/stlite) — Streamlit running in
+the visitor's browser on WebAssembly — and served as static files from this site:
+
+| Demo | What the hosted copy does | Source |
+| --- | --- | --- |
+| `/demos/scoutlens/` | The real app in `PUBLIC_DEMO` mode: recorded responses for a fictional company, no URL/résumé input, nothing stored, no API key | ScoutLens, branch `feature/public-demo-mode` |
+| `/demos/fake-news/` | The real model and app; scores pasted text (a browser cannot fetch other sites' pages) | Fake-News-Predictor, branch `deploy/safe-url-fetch` |
+
+Each bundle is an `index.html` plus the app's own files under `app/`. The Python runtime (about 10 MB, cached by the
+browser) is loaded from the jsDelivr CDN when a demo window is opened; nothing loads at page load. If the apps change,
+rebuild the bundle from the source repository, update the commit noted in `src/data/projects.ts`, redeploy and rerun the
+two checks above.
+
 ## Notes on honesty and privacy
 
 - The résumé is generated from the same data as the site. It deliberately omits a phone number.
-- The embedded demos run on separate hosts and are loaded only when their window is opened. If a host refuses
-  to be framed, the window offers "Open full application" instead of trying to work around it.
+- Embedded apps are loaded only when their window is opened. If a host refuses to be framed, the window offers
+  "Open full application" instead of trying to work around it. The in-browser demos are same-origin, so they are
+  framed with the sandbox attributes in `EmbedFrame`. The apps themselves send nothing to a server (pasted text is
+  scored in the browser; ScoutLens's public mode keeps nothing and makes no search or LLM calls), but the visitor's
+  browser does download the runtime and Python packages from public CDNs (jsDelivr, the Pyodide/PyPI mirrors), which
+  can see the visitor's IP address like any CDN request.
 - No photo is shown unless one is deliberately configured (`photo` in `src/data/profile.ts`); the UI falls back
   to a monogram.
 
