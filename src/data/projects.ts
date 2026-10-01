@@ -199,7 +199,7 @@ export const projects: Project[] = [
     ],
     facts: [
       { label: "Code", value: "≈13.3k lines of Python across 34 test files and 100+ modules" },
-      { label: "Tests", value: "README reports 592 tests with no network or key needed (re-run below)" },
+      { label: "Tests", value: "592 tests, all passing when re-run on 2026-09-30 — no network or API key needed" },
       { label: "Live check", value: "README: verified on two real listings on 2026-09-30" },
     ],
     screenshots: [
@@ -214,7 +214,8 @@ export const projects: Project[] = [
       kind: "none",
       note: "Live investigations need a SerpApi key. The demo replays recorded responses for a fictional company.",
     },
-    verification: "Source and README read on 2026-09-30.",
+    verification:
+      "Run locally on 2026-09-30 (Python 3.11): the full test suite passed (592 of 592); the demo investigation completes every stage and renders the report with the Demo-data label; no console errors and no horizontal overflow at 390 px.",
     needs: ["Python 3.11+", "A SerpApi key for live investigations (not needed for the demo)", "Ollama or an OpenAI-compatible API is optional"],
     runLocally: [
       "git clone https://github.com/uppadadhiraj/ScoutLens.git && cd ScoutLens",
@@ -422,22 +423,36 @@ export const projects: Project[] = [
         detail:
           "The vision model only chooses between three fixed strengths; it does not tune the algorithm beyond that, and the repo contains no quantitative evaluation. The guided/baseline comparison is visual.",
       },
+      {
+        title: "The guidance is only as good as the vision model",
+        detail:
+          "On the repository's own foggy sample image, llava answered “fog: low, haze: low, rain: no”, which selects the weakest strength (0.75). A small local vision model can misjudge a scene, and nothing downstream checks it.",
+      },
     ],
     future: [
       "Add a README and sample images",
       "Estimate atmospheric light more robustly than the maximum of the dark channel",
       "Measure results (for example with SSIM/PSNR on a dehazing benchmark) instead of comparing by eye",
-      "Fall back gracefully when Ollama is not available",
+      "Handle Ollama being unavailable (the view shells out to the ollama CLI with no fallback)",
     ],
     facts: [
       { label: "Method", value: "Dark channel prior + LLaVA-selected strength" },
       { label: "History", value: "2 commits on 2026-02-27" },
+      { label: "Local run", value: "llava answered in about 12 s for the sample image (2026-09-30)" },
+    ],
+    screenshots: [
+      {
+        src: "/projects/rainfoghaze/result.webp",
+        alt: "RainFogHaze showing the OpenCV baseline output and the GenAI-guided output side by side, with LLaVA's fog, haze and rain answers underneath",
+        caption: "Real output from a local run on the repository's sample image (2026-09-30).",
+      },
     ],
     demo: {
       kind: "none",
       note: "The guided mode needs a local LLaVA model through Ollama.",
     },
-    verification: "Source read on 2026-09-30; local run recorded below when done.",
+    verification:
+      "Run locally on 2026-09-30: the home page loads (HTTP 200); a non-image upload is rejected with a message; a JPG upload goes through LLaVA (about 12 s) and OpenCV and renders both outputs side by side.",
     needs: ["Python 3.11+", "Ollama with the llava model for guided mode"],
     runLocally: [
       "git clone https://github.com/uppadadhiraj/RainFogHaze-OpenCV-GenAI.git",
@@ -511,12 +526,26 @@ export const projects: Project[] = [
       { label: "Chunking", value: "1000 characters, 200 overlap" },
       { label: "Retrieval", value: "k = 4, relevance floor 0.35, filtered by subject" },
       { label: "Models", value: "nomic-embed-text + llama3.1:8b via Ollama" },
+      { label: "Bundled index", value: "123 chunks of the ESS (electrical energy storage) slides in the repo's chroma_db" },
+    ],
+    screenshots: [
+      {
+        src: "/projects/study-buddy/answer.webp",
+        alt: "Study Buddy answering a question about renewable energy storage from the ESS subject's slides",
+        caption: "A grounded answer, from a real local run (2026-10-01).",
+      },
+      {
+        src: "/projects/study-buddy/refusal.webp",
+        alt: "Study Buddy refusing an off-topic question because it is not in the ESS study material",
+        caption: "An off-topic question is refused instead of answered from general knowledge.",
+      },
     ],
     demo: {
       kind: "none",
-      note: "Needs Ollama for embeddings and generation, so it is not hosted.",
+      note: "Needs Ollama for embeddings and generation, so it is not hosted. The screenshots come from a real local run.",
     },
-    verification: "Source read on 2026-09-30; local run recorded below when done.",
+    verification:
+      "Run locally on 2026-10-01 (Python 3.11, Ollama llama3.1:8b + nomic-embed-text): an in-topic question about the ESS slides returned a grounded answer in about 4 s; an off-topic question (“Who won the 2010 football world cup?”) was refused in about 2 s with “I couldn't find this information in the ESS study material.”",
     needs: ["Python 3.11+", "Ollama with nomic-embed-text and llama3.1:8b"],
     runLocally: [
       "git clone https://github.com/uppadadhiraj/Study-Buddy.git && cd Study-Buddy",
@@ -569,25 +598,35 @@ export const projects: Project[] = [
       "Sole committer on the repository (12 commits, 2025-10-01 → 2025-10-02). It is also listed on my resume. What it implements: the training notebook, the saved model artefacts and the Streamlit app as committed.",
     challenges: [
       {
-        title: "What the classifier may really be learning",
+        title: "A 99.5% score that mostly measures the source, not the truth",
         detail:
-          "Sample rows suggest the FAKE class is largely fact-check write-ups (“A viral video of…”, “A photo purporting to show…”) and the REAL class mainstream reports (“NEW DELHI: …”). Style cues could carry the prediction, so treat the score as a demo signal, not evidence of falsehood. (Checked below against the model's strongest features.)",
+          "The notebook prints no metric, so the saved model was re-evaluated on its own held-out split: 99.5% accuracy on 745 articles. But its strongest FAKE-class features are fact-checking vocabulary — video, boom, viral, fake, image, claim, fact. In the training split 1,327 of 2,976 articles contain “boom” (a fact-checking outlet's name) and every one is labelled FAKE, while “NEW DELHI” articles are 88% REAL. The model has learned which outlet wrote an article more than whether it is false, so treat its output as a demo signal, not a verdict.",
       },
     ],
     future: [
-      "Report a held-out metric in the notebook (none is printed in the repo)",
-      "Check for style/source leakage and test on articles from outlets not in the training set",
-      "Use a pipeline object instead of three separate pickles",
+      "Report a held-out metric in the notebook (none is printed in the repo) next to a leakage check",
+      "Evaluate on articles from outlets that are not in the training set",
+      "Use a single scikit-learn Pipeline instead of three separate pickles (they were written with scikit-learn 1.6.1)",
     ],
     facts: [
       { label: "Model", value: "TF-IDF (5,000 features) + LogisticRegression" },
-      { label: "Split", value: "80/20, random_state 42" },
+      { label: "Data", value: "3,729 labelled articles (1,877 FAKE, 1,852 REAL); 8 empty texts dropped" },
+      { label: "Split", value: "80/20, random_state 42 → 2,976 train, 745 test" },
+      { label: "Re-measured", value: "99.5% test accuracy (360/1 and 3/381 confusion), 2026-09-30 — see the leakage note below" },
+    ],
+    screenshots: [
+      {
+        src: "/projects/fake-news-predictor/result.webp",
+        alt: "Fake News Predictor showing a REAL prediction with a confidence score for a pasted URL",
+        caption: "Smoke test on a Wikipedia page (not a news article) — it still returns a label, which is part of the limitation.",
+      },
     ],
     demo: {
       kind: "none",
       note: "Not hosted yet.",
     },
-    verification: "Source read on 2026-09-30; local run and re-evaluation recorded below when done.",
+    verification:
+      "Run locally on 2026-09-30 (Python 3.11, scikit-learn 1.9.1 loading the repo's 1.6.1 pickles): the app loads, returns a label and confidence for a URL, and shows readable errors for a malformed URL and an unreachable host; test-split accuracy and top features re-measured from the saved model.",
     needs: ["Python 3.11+", "Internet access (to download the article)"],
     runLocally: [
       "git clone https://github.com/uppadadhiraj/Fake-News-Predictor.git && cd Fake-News-Predictor/App",
@@ -637,13 +676,24 @@ export const projects: Project[] = [
     contribution:
       "Sole author on the repository (4 commits, 2025-07-25 → 2025-07-26). What it implements: the prompt design, the chat loop and the README, as committed.",
     future: [
-      "Apply the selected style to a conversation already in progress (the system message is currently created once per session)",
-      "Hide DeepSeek-R1's reasoning block from the rendered reply",
-      "Add mock-interview mode that asks the questions",
+      "Apply the selected style to a conversation already in progress (as written, the system message is created once per session)",
+      "Enforce the length rules: a run in “Interview Answer” mode returned far more than the 5–8 lines the prompt asks for",
+      "Add a mock-interview mode that asks the questions",
     ],
-    facts: [{ label: "Model", value: "deepseek-r1:8b via Ollama, temperature 0.2" }],
-    demo: { kind: "none", note: "Needs a local DeepSeek-R1:8B model through Ollama, so it is not hosted." },
-    verification: "Source read on 2026-09-30; local run recorded below when done.",
+    facts: [
+      { label: "Model", value: "deepseek-r1:8b via Ollama, temperature 0.2" },
+      { label: "Local run", value: "about 26 s for a full interview-style answer (2026-10-01)" },
+    ],
+    screenshots: [
+      {
+        src: "/projects/interview-coach/answer.webp",
+        alt: "AI Interview Coach showing a structured interview-style answer about retrieval-augmented generation",
+        caption: "Real output from a local run (2026-10-01).",
+      },
+    ],
+    demo: { kind: "none", note: "Needs a local DeepSeek-R1:8B model through Ollama, so it is not hosted. The screenshot comes from a real local run." },
+    verification:
+      "Run locally on 2026-10-01 (Python 3.11, Ollama deepseek-r1:8b): the app loads, and a question about retrieval-augmented generation returned a structured, formatted answer in about 26 s with no reasoning text leaking into the reply and no console errors.",
     needs: ["Python 3.11+", "Ollama with deepseek-r1:8b"],
     runLocally: [
       "git clone https://github.com/uppadadhiraj/AI-Interview-Coach-Ollama.git && cd AI-Interview-Coach-Ollama",
