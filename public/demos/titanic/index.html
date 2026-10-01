@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Titanic Survival Analysis</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/browser@1.9.2/build/stlite.css" />
+  <style>
+    html, body { margin: 0; height: 100%; }
+    #boot { font: 15px/1.5 system-ui, sans-serif; color: #3c4052; padding: 28px; max-width: 560px; margin: 8vh auto; }
+    #boot b { color: #0a1f7a; }
+  </style>
+</head>
+<body>
+  <div id="boot"><b>Starting Titanic Survival Analysis…</b><br />This is a real Streamlit app, running inside your browser (WebAssembly). The first load downloads the Python runtime (about 10&nbsp;MB) and is then cached.</div>
+  <div id="root"></div>
+  <noscript>This demo needs JavaScript.</noscript>
+  <script type="module">
+    import { mount } from "https://cdn.jsdelivr.net/npm/@stlite/browser@1.9.2/build/stlite.js";
+    const config = {"entrypoint": "app.py", "requirements": ["pandas", "numpy"], "files": {"app.py": {"url": "./app/app.py"}, "demo_common.py": {"url": "./app/demo_common.py"}, "Titanic-Dataset.csv": {"url": "./app/Titanic-Dataset.csv"}}, "streamlitConfig": {"client.toolbarMode": "minimal", "client.showErrorDetails": "none"}};
+    mount(config, document.getElementById("root"));
+    const hide = () => { if (document.querySelector("#root [data-testid='stApp'], #root .stApp, #root [data-testid='stAppViewContainer']")) document.getElementById("boot")?.remove(); };
+    new MutationObserver(hide).observe(document.getElementById("root"), { childList: true, subtree: true });
+  </script>
+</body>
+</html>

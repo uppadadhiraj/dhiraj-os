@@ -1,4 +1,4 @@
-import type { Project } from "./types";
+import type { Demo, Development, Project, Screenshot } from "./types";
 
 /**
  * Structured project data — the single source of truth for every card, window,
@@ -7,8 +7,9 @@ import type { Project } from "./types";
  * actually executed. Nothing in this file is an estimate.
  *
  * `status` is only LIVE/DEMO when a deployment has been opened and exercised.
- * `development: "unconfirmed"` means the repo carries no AI-assistance markers
- * either way; the UI then avoids claiming manual authorship.
+ * `development` is the owner's own account (2026-10-01): ScoutLens, SCARFLOW and Verascope were
+ * built with AI coding tools and are "ai-assisted"; everything else is "hand-built", with the
+ * caveat that an LLM was sometimes asked for help when stuck (stated in each devNote).
  */
 export const projects: Project[] = [
   /* ------------------------------------------------------------------ */
@@ -354,8 +355,8 @@ export const projects: Project[] = [
     category: "built",
     featured: true,
     status: "HARDWARE",
-    development: "unconfirmed",
-    devNote: "Final-year team project (four members). Source is not published yet.",
+    development: "hand-built",
+    devNote: "Final-year team project (four members). I built my part myself, sometimes asking an LLM for help when I got stuck. Source is not published yet.",
     repo: "SmartRide-AI",
     stack: ["Python", "Raspberry Pi", "YOLOv8", "TensorFlow Lite", "OpenCV", "MediaPipe", "MPU6050"],
     tags: ["computer-vision", "edge-ai", "hardware"],
@@ -415,8 +416,8 @@ export const projects: Project[] = [
     category: "built",
     featured: true,
     status: "LOCAL ONLY",
-    development: "unconfirmed",
-    devNote: "Repository has no AI-assistance markers; development method not yet labelled.",
+    development: "hand-built",
+    devNote: "Built by me. I sometimes asked an LLM for help when I got stuck, but the project is not AI-generated.",
     repo: "RainFogHaze-OpenCV-GenAI",
     stack: ["Python", "Django", "OpenCV", "NumPy", "Ollama", "LLaVA"],
     tags: ["computer-vision", "genai", "django"],
@@ -501,8 +502,8 @@ export const projects: Project[] = [
     category: "built",
     featured: false,
     status: "LOCAL ONLY",
-    development: "unconfirmed",
-    devNote: "Repository has no AI-assistance markers; development method not yet labelled.",
+    development: "hand-built",
+    devNote: "Built by me. I sometimes asked an LLM for help when I got stuck, but the project is not AI-generated.",
     repo: "Study-Buddy",
     stack: ["Python", "Streamlit", "LangChain", "ChromaDB", "Ollama", "llama3.1:8b"],
     tags: ["rag", "genai", "python"],
@@ -596,8 +597,8 @@ export const projects: Project[] = [
     category: "built",
     featured: false,
     status: "DEMO",
-    development: "unconfirmed",
-    devNote: "Repository has no AI-assistance markers; development method not yet labelled.",
+    development: "hand-built",
+    devNote: "Built by me. I sometimes asked an LLM for help when I got stuck, but the project is not AI-generated.",
     repo: "Fake-News-Predictor",
     stack: ["Python", "scikit-learn", "TF-IDF", "Newspaper3k", "Streamlit"],
     tags: ["nlp", "ml", "python"],
@@ -678,8 +679,8 @@ export const projects: Project[] = [
     category: "built",
     featured: false,
     status: "LOCAL ONLY",
-    development: "unconfirmed",
-    devNote: "Repository has no AI-assistance markers; development method not yet labelled.",
+    development: "hand-built",
+    devNote: "Built by me. I sometimes asked an LLM for help when I got stuck, but the project is not AI-generated.",
     repo: "AI-Interview-Coach-Ollama",
     stack: ["Python", "Streamlit", "LangChain", "Ollama", "DeepSeek-R1:8B"],
     tags: ["genai", "chatbot", "python"],
@@ -745,8 +746,8 @@ export const projects: Project[] = [
     category: "built",
     featured: false,
     status: "LOCAL ONLY",
-    development: "unconfirmed",
-    devNote: "Repository has no AI-assistance markers; development method not yet labelled.",
+    development: "hand-built",
+    devNote: "Built by me. I sometimes asked an LLM for help when I got stuck, but the project is not AI-generated.",
     repo: "Job-Application-Tracker",
     stack: ["Python", "FastAPI", "SQLAlchemy", "MySQL", "Pydantic", "Streamlit"],
     tags: ["backend", "full-stack", "api", "sql"],
@@ -799,8 +800,8 @@ export const projects: Project[] = [
     category: "built",
     featured: false,
     status: "LOCAL ONLY",
-    development: "unconfirmed",
-    devNote: "Repository has no AI-assistance markers; development method not yet labelled.",
+    development: "hand-built",
+    devNote: "Built by me. I sometimes asked an LLM for help when I got stuck, but the project is not AI-generated.",
     repo: "AI-Analytics",
     stack: ["Python", "Streamlit", "LangChain", "Pandas", "Plotly", "Ollama (qwen3:4b)"],
     tags: ["agents", "data", "genai", "python"],
@@ -872,9 +873,15 @@ export interface OtherProject {
   blurb: string;
   stack: string[];
   status: Project["status"];
+  /** defaults to "hand-built" (every smaller repository is) */
+  development?: Development;
   /** a fact from the README/notebook that can be checked in the repo */
   note?: string;
   created?: string;
+  /** window title for the demo, e.g. "Iris.exe" */
+  exe?: string;
+  /** a runnable demo; same rules as for the main projects (embed only after it was opened and exercised) */
+  demo?: Demo;
 }
 
 export const otherProjects: OtherProject[] = [
@@ -910,7 +917,13 @@ export const otherProjects: OtherProject[] = [
     repo: "Movie-Recommendations",
     blurb: "TMDB 5000 movie recommender: notebook builds the similarity assets, a Streamlit app serves recommendations.",
     stack: ["Python", "pandas", "scikit-learn", "Streamlit"],
-    status: "LOCAL ONLY",
+    status: "DEMO",
+    exe: "MovieRecommender.exe",
+    demo: {
+      kind: "embed",
+      url: "/demos/movie/index.html",
+      note: "The repository's real app.py, unmodified, running in your browser. The repo does not include the two pickle files the app loads (the notebook generates them), so I regenerated them by running the notebook's steps; similarity.pkl is stored compactly (each movie's 12 nearest neighbours instead of the full 4,806 × 4,806 matrix) and gives identical recommendations for every movie — checked by the generator script.",
+    },
   },
   {
     slug: "iris-predictor",
@@ -918,7 +931,13 @@ export const otherProjects: OtherProject[] = [
     repo: "Iris-Predictor",
     blurb: "Streamlit app that predicts iris species from four measurements using a pickled model and label encoder.",
     stack: ["Python", "scikit-learn", "Streamlit"],
-    status: "LOCAL ONLY",
+    status: "DEMO",
+    exe: "Iris.exe",
+    demo: {
+      kind: "embed",
+      url: "/demos/iris/index.html",
+      note: "The repository's real Streamlit app, unmodified, running in your browser (WebAssembly). It starts at 0, 0, 0, 0 — type four measurements (for example 5.1, 3.5, 1.4, 0.2) and press Predict.",
+    },
   },
   {
     slug: "house-prediction",
@@ -944,7 +963,13 @@ export const otherProjects: OtherProject[] = [
     repo: "Heart-Disease-Predictor",
     blurb: "End-to-end ML notebook on the UCI heart-disease data: imputation, scaling, encoding, model training and evaluation.",
     stack: ["Python", "scikit-learn", "pandas"],
-    status: "ARCHIVED",
+    status: "DEMO",
+    exe: "HeartDisease.exe",
+    demo: {
+      kind: "embed",
+      url: "/demos/heart/index.html",
+      note: "An interactive Streamlit page written with Claude Code around the notebook's preprocessing and SVM. The model trains in your browser on the repository's UCI data when the page opens; the accuracy it shows is computed live. Educational only.",
+    },
   },
   {
     slug: "titanic-ship-survival",
@@ -952,7 +977,13 @@ export const otherProjects: OtherProject[] = [
     repo: "Titanic_Ship_Survival",
     blurb: "EDA, feature engineering and survival prediction, ending in a YData Profiling HTML report.",
     stack: ["Python", "pandas", "seaborn", "scikit-learn"],
-    status: "ARCHIVED",
+    status: "DEMO",
+    exe: "Titanic.exe",
+    demo: {
+      kind: "embed",
+      url: "/demos/titanic/index.html",
+      note: "An interactive explorer written with Claude Code around the notebook's cleaning and feature-engineering steps (the notebook itself trains no model). Filter passengers and see survival rates.",
+    },
   },
   {
     slug: "netflix-content-eda",
@@ -960,7 +991,13 @@ export const otherProjects: OtherProject[] = [
     repo: "Netflix-Content-EDA",
     blurb: "Exploratory analysis of the Netflix catalogue: release year vs year added, movies vs TV shows, genres.",
     stack: ["Python", "pandas", "matplotlib"],
-    status: "ARCHIVED",
+    status: "DEMO",
+    exe: "NetflixEDA.exe",
+    demo: {
+      kind: "embed",
+      url: "/demos/netflix/index.html",
+      note: "An interactive explorer written with Claude Code around the notebook's cleaning and questions (types, years added, genres, countries, ratings, durations) plus a title browser. The word cloud is left out.",
+    },
   },
   {
     slug: "sct-ml-1",
@@ -968,8 +1005,14 @@ export const otherProjects: OtherProject[] = [
     repo: "SCT_ML_1",
     blurb: "Task 01 of the SkillCraft Technology internship program: linear regression on square footage, bedrooms and bathrooms.",
     stack: ["Python", "pandas", "scikit-learn"],
-    status: "ARCHIVED",
+    status: "DEMO",
     note: "Notebook reports R² 0.658.",
+    exe: "HousePrice.exe",
+    demo: {
+      kind: "embed",
+      url: "/demos/house-price/index.html",
+      note: "An interactive page written with Claude Code around the notebook's linear regression: it fits the model on the Kaggle training data in your browser and estimates a price from area, bedrooms and bathrooms.",
+    },
   },
   {
     slug: "linear-regression-from-scratch",
@@ -977,7 +1020,13 @@ export const otherProjects: OtherProject[] = [
     repo: "linear-regression-from-scratch",
     blurb: "Gradient-descent linear regression derived by hand and implemented with NumPy only, with a fitted-line plot.",
     stack: ["Python", "NumPy", "matplotlib"],
-    status: "ARCHIVED",
+    status: "DEMO",
+    exe: "LinearRegression.exe",
+    demo: {
+      kind: "embed",
+      url: "/demos/linear-regression/index.html",
+      note: "Your from-scratch Linear_Regression class, copied unchanged, inside an interactive page written with Claude Code: change the learning rate and iterations and watch the fit and the loss.",
+    },
   },
   {
     slug: "logistic-regression-from-scratch",
@@ -985,7 +1034,22 @@ export const otherProjects: OtherProject[] = [
     repo: "logistic-regression-from-scratch",
     blurb: "Logistic regression implemented from the formulas up and tested on the diabetes dataset.",
     stack: ["Python", "NumPy"],
+    status: "DEMO",
+    exe: "LogisticRegression.exe",
+    demo: {
+      kind: "embed",
+      url: "/demos/logistic-regression/index.html",
+      note: "Your from-scratch Logistic_Regression class, copied unchanged, inside an interactive page written with Claude Code: tune training, see accuracy, and classify a patient.",
+    },
+  },
+  {
+    slug: "smart-insights-customer-patterns",
+    name: "Smart Insights of Customer Patterns",
+    repo: "Smart-Insights-of-Customer-Patters-",
+    blurb: "A customer-segmentation project: the README describes Gender vs Spending Score analysis and clustering with feature engineering and the elbow method. The notebook and dataset currently in the repository are the heart-disease ones, so the clustering notebook is not published there yet.",
+    stack: ["Python", "scikit-learn", "pandas"],
     status: "ARCHIVED",
+    note: "Check the repository's README for the intended scope.",
   },
   {
     slug: "genai-basics",
@@ -998,6 +1062,43 @@ export const otherProjects: OtherProject[] = [
 ];
 
 export const projectBySlug = (slug: string): Project | undefined => projects.find((p) => p.slug === slug);
+/** How a project (main or "other") was developed; the smaller repositories are all hand-built. */
+export const developmentOf = (slug: string): Development =>
+  projectBySlug(slug)?.development ?? otherProjects.find((o) => o.slug === slug)?.development ?? "hand-built";
+
+/** Anything that can open in a demo window: a main project, or a smaller repository that has a demo. */
+export interface DemoSubject {
+  slug: string;
+  name: string;
+  exe: string;
+  status: Project["status"];
+  development: Development;
+  repo: string | null;
+  demo: Demo;
+  screenshots?: Screenshot[];
+  /** true for the main projects, which have a full write-up window */
+  hasWriteup: boolean;
+}
+
+export function demoSubject(slug: string): DemoSubject | undefined {
+  const p = projectBySlug(slug);
+  if (p) {
+    return { slug: p.slug, name: p.name, exe: p.exe, status: p.status, development: p.development, repo: p.repo, demo: p.demo, screenshots: p.screenshots, hasWriteup: true };
+  }
+  const o = otherProjects.find((x) => x.slug === slug);
+  if (o?.demo) {
+    return { slug: o.slug, name: o.name, exe: o.exe ?? `${o.name}.exe`, status: o.status, development: o.development ?? "hand-built", repo: o.repo, demo: o.demo, hasWriteup: false };
+  }
+  return undefined;
+}
+
+/** Every project and smaller repository that can be opened in a demo window, main projects first. */
+export const allDemoSubjects = (): DemoSubject[] =>
+  [...projects.map((p) => p.slug), ...otherProjects.filter((o) => o.demo).map((o) => o.slug)].map((s) => demoSubject(s)!);
+
+/** The ones whose demo really runs (embed). */
+export const runnableDemos = (): DemoSubject[] => allDemoSubjects().filter((d) => d.demo.kind === "embed" && !!d.demo.url);
+
 export const featuredProjects = (): Project[] => projects.filter((p) => p.featured);
 export const builtProjects = (): Project[] => projects.filter((p) => p.category === "built");
 export const importantProjects = (): Project[] => projects.filter((p) => p.category === "important");

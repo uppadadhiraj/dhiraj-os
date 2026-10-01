@@ -24,6 +24,13 @@ export const statusHelp: Record<Status, string> = {
 };
 
 export function DevBadge({ development }: { development: Development }) {
+  if (development === "hand-built") {
+    return (
+      <span className="pill" data-kind="own" title="Written by me. I sometimes asked an LLM for help when I got stuck; the project is not AI-generated.">
+        HAND-BUILT
+      </span>
+    );
+  }
   if (development !== "ai-assisted") return null;
   return (
     <span className="pill" data-kind="ai" title="Built with AI coding tools; disclosed in the repository">

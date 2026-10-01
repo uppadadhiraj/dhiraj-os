@@ -29,7 +29,7 @@ export const stackTree: StackBranch[] = [
     ],
   },
   {
-    name: "TypeScript / JS",
+    name: "TS / JS (AI-assisted)",
     tone: "web",
     leaves: [
       { name: "React", projects: ["verascope", "scarflow"] },

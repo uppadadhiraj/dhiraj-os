@@ -9,6 +9,7 @@ import { PREF_KEYS, usePref } from "@/lib/prefs";
 import { useWm, useWmState } from "@/components/os/WindowManager";
 import { useSiteStats } from "@/components/os/SiteContext";
 import { PixelIcon } from "@/components/os/PixelIcon";
+import { WALLPAPERS } from "@/components/os/Wallpaper";
 import { Pane } from "./common";
 
 const subscribeReduce = (cb: () => void) => {
@@ -32,6 +33,7 @@ export function SystemInfoApp() {
   const stats = useSiteStats();
   const [sound, setSound] = usePref(PREF_KEYS.sound, "0");
   const [crt, setCrt] = usePref(PREF_KEYS.crt, "on");
+  const [wallpaper, setWallpaper] = usePref(PREF_KEYS.wallpaper, "dusk");
   const reduced = useSyncExternalStore(
     subscribeReduce,
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -40,7 +42,7 @@ export function SystemInfoApp() {
 
   const env = skillGroups
     .flatMap((g) => g.skills)
-    .filter((s) => s.level === "used" && ["Python", "Java", "FastAPI", "React", "Docker", "Ollama", "PostgreSQL", "TypeScript"].includes(s.name))
+    .filter((s) => s.level === "used" && ["Python", "Java", "SQL", "Streamlit", "FastAPI", "Ollama", "PostgreSQL"].includes(s.name))
     .map((s) => s.name);
 
   return (
@@ -68,7 +70,7 @@ export function SystemInfoApp() {
       <section className="groupbox" aria-labelledby="si-os">
         <h2 id="si-os" className="groupbox-label !m-0 !text-[13px]">This system (measured at build time)</h2>
         <dl className="m-0 grid grid-cols-[110px_1fr] gap-x-3 gap-y-1 text-[14px]">
-          <Row k="Stack" v="Next.js 16 · React 19 · TypeScript · Tailwind CSS 4" />
+          <Row k="Stack" v="Next.js 16 · React 19 · TypeScript · Tailwind CSS 4 — built with Claude Code from my brief (I don't write these)" />
           <Row k="Source" v={`${buildInfo.sourceFiles} files · ${buildInfo.sourceLines.toLocaleString("en-US")} lines · ${buildInfo.components} components`} />
           <Row k="Tests" v={`${buildInfo.unitTests} unit · ${buildInfo.e2eTests} end-to-end`} />
           <Row k="Built" v={`${new Date(buildInfo.builtAt).toUTCString()}${buildInfo.commit ? ` · ${buildInfo.commit}` : ""}`} />
@@ -80,6 +82,15 @@ export function SystemInfoApp() {
       <section className="groupbox" aria-labelledby="si-display">
         <h2 id="si-display" className="groupbox-label !m-0 !text-[13px]">Display &amp; sound</h2>
         <div className="flex flex-col gap-2 text-[14px]">
+          <fieldset className="m-0 flex flex-wrap items-center gap-x-4 gap-y-1 border-0 p-0">
+            <legend className="float-left mr-3 p-0 font-semibold">Wallpaper</legend>
+            {WALLPAPERS.map((w) => (
+              <label key={w.id} className="flex items-center gap-1.5">
+                <input type="radio" name="wallpaper" value={w.id} checked={wallpaper === w.id} onChange={() => setWallpaper(w.id)} />
+                {w.label}
+              </label>
+            ))}
+          </fieldset>
           <label className="flex items-center gap-2">
             <input type="checkbox" checked={crt === "on"} onChange={(e) => setCrt(e.target.checked ? "on" : "off")} />
             CRT scanlines on the desktop wallpaper

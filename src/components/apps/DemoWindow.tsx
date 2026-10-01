@@ -1,6 +1,6 @@
 "use client";
 
-import { projectBySlug } from "@/data/projects";
+import { demoSubject } from "@/data/projects";
 import { useWm } from "@/components/os/WindowManager";
 import type { AppProps } from "@/components/os/app-components";
 import { Gallery } from "./Gallery";
@@ -9,7 +9,7 @@ import { Pane } from "./common";
 
 /** The window behind "Live Demo" / "Launch": a real embed, or an honest preview. */
 export function DemoWindow({ slug }: AppProps) {
-  const p = slug ? projectBySlug(slug) : undefined;
+  const p = slug ? demoSubject(slug) : undefined;
   const { open } = useWm();
 
   if (!p) {
@@ -35,11 +35,13 @@ export function DemoWindow({ slug }: AppProps) {
           <Gallery shots={p.screenshots} projectName={p.name} />
         </>
       ) : null}
-      <div className="mt-4 flex gap-2">
-        <button type="button" className="btn btn-primary" onClick={() => open(`project:${p.slug}`)}>
-          Open the write-up
-        </button>
-      </div>
+      {p.hasWriteup ? (
+        <div className="mt-4 flex gap-2">
+          <button type="button" className="btn btn-primary" onClick={() => open(`project:${p.slug}`)}>
+            Open the write-up
+          </button>
+        </div>
+      ) : null}
     </Pane>
   );
 }

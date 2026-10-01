@@ -51,7 +51,7 @@ export const profile = {
     },
   ],
   aiTransparency:
-    "I use AI coding tools — mainly Claude Code — on several projects. Those are labelled AI-ASSISTED, and I only apply a label I can back with evidence from the repository (README disclosures, commit trailers).",
+    "Three of my projects — ScoutLens, SCARFLOW and Verascope — were built with AI coding tools (mainly Claude Code) and are labelled AI-ASSISTED. I wrote the others myself, asking an LLM for help only when I got stuck. This portfolio site was also built with Claude Code from my brief: I don't write React or TypeScript, and Streamlit is the one UI tool I know.",
 } as const;
 
 /** "What I'm building": areas of exploration, each tied to real repositories via project tags. */

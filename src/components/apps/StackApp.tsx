@@ -116,7 +116,8 @@ export function StackApp() {
         <div className="min-w-0 flex-1">
           <h1 className="!mb-0 !text-[22px]">STACK.exe</h1>
           <p className="!m-0 text-[13.5px] text-[var(--c-ink-2)]">
-            How the technologies relate and which of my projects use each one. Every link is drawn from project data.
+            How the technologies relate and which of my projects use each one. Every link is drawn from project data. The
+            TS / JS branch exists only in projects I built with AI tools — I don&apos;t write that code myself.
           </p>
         </div>
         <div role="group" aria-label="View" className="flex gap-1">

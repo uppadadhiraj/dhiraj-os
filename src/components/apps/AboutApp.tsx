@@ -33,17 +33,21 @@ export function AboutApp() {
 
       <SectionTitle>What I do</SectionTitle>
       <p>
-        I&apos;m a fourth-year B.Tech Computer Science student at Vidya Jyothi Institute of Technology in Hyderabad. I like
-        building systems that do something checkable: an agent that investigates a codebase and has to cite the lines it
-        used (<button type="button" className="underline" onClick={() => open("project:verascope")}>Verascope</button>), a
+        I&apos;m a fourth-year B.Tech Computer Science student at Vidya Jyothi Institute of Technology in Hyderabad. The
+        projects I wrote myself are in machine learning, NLP and computer vision — text classifiers, from-scratch
+        regression, a movie recommender, a dehazing pipeline in OpenCV — and chat apps on local models with Ollama and
+        Streamlit. Streamlit is the one UI tool I know, and several of these you can{" "}
+        <button type="button" className="underline" onClick={() => open("playground")}>try in your browser</button>.
+      </p>
+      <p>
+        I have also used AI coding tools (mainly Claude Code) to build larger systems that I designed and directed, and
+        they are labelled AI-ASSISTED: an agent that investigates a codebase and cites the lines it used (
+        <button type="button" className="underline" onClick={() => open("project:verascope")}>Verascope</button>), a
         search-backed agent that refuses to state a claim without a source (
         <button type="button" className="underline" onClick={() => open("project:scoutlens")}>ScoutLens</button>), and a
         multi-tenant SaaS for supplier corrective actions (
-        <button type="button" className="underline" onClick={() => open("project:scarflow")}>SCARFLOW</button>).
-      </p>
-      <p>
-        Earlier work is classic machine learning and computer vision — text classifiers, from-scratch regression, and a
-        dehazing pipeline in OpenCV — and I&apos;m moving toward agents, retrieval and backend engineering.
+        <button type="button" className="underline" onClick={() => open("project:scarflow")}>SCARFLOW</button>). I&apos;m
+        moving toward agents, retrieval and backend engineering.
       </p>
 
       <SectionTitle>Currently interested in</SectionTitle>

@@ -15,6 +15,7 @@ export const PREF_KEYS = {
   sound: "sound", // "1" | "0"   (default off)
   crt: "crt", // "on" | "off" (default on)
   tip: "tip", // "1" once the welcome tip was dismissed
+  wallpaper: "wallpaper", // "dusk" | "teal" | "blueprint" (default dusk)
 } as const;
 
 type PrefKey = (typeof PREF_KEYS)[keyof typeof PREF_KEYS];

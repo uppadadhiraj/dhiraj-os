@@ -1,7 +1,6 @@
 "use client";
 
-import { projects } from "@/data/projects";
-import type { Project } from "@/data/types";
+import { allDemoSubjects, type DemoSubject } from "@/data/projects";
 import { useWm } from "@/components/os/WindowManager";
 import { PixelIcon } from "@/components/os/PixelIcon";
 import { DevBadge, ExtLink, StatusPill } from "@/components/ui";
@@ -9,7 +8,7 @@ import { githubUrl } from "@/lib/links";
 import { Pane } from "./common";
 
 type Mode = "live" | "preview" | "local";
-const modeOf = (p: Project): Mode =>
+const modeOf = (p: DemoSubject): Mode =>
   p.demo.kind === "embed" && p.demo.url ? "live" : p.screenshots?.length ? "preview" : "local";
 
 const MODE_COPY: Record<Mode, { title: string; blurb: string }> = {
@@ -23,8 +22,8 @@ const MODE_COPY: Record<Mode, { title: string; blurb: string }> = {
 
 export function PlaygroundApp() {
   const { open } = useWm();
-  const groups: Record<Mode, Project[]> = { live: [], preview: [], local: [] };
-  for (const p of projects) groups[modeOf(p)].push(p);
+  const groups: Record<Mode, DemoSubject[]> = { live: [], preview: [], local: [] };
+  for (const p of allDemoSubjects()) groups[modeOf(p)].push(p);
   const liveCount = groups.live.length;
 
   return (
@@ -79,9 +78,11 @@ export function PlaygroundApp() {
                         View screenshots
                       </button>
                     )}
-                    <button type="button" className="btn btn-sm" onClick={() => open(`project:${p.slug}`)}>
-                      Write-up
-                    </button>
+                    {p.hasWriteup ? (
+                      <button type="button" className="btn btn-sm" onClick={() => open(`project:${p.slug}`)}>
+                        Write-up
+                      </button>
+                    ) : null}
                     {githubUrl(p.repo) ? (
                       <ExtLink href={githubUrl(p.repo)!} variant="button" className="btn-sm">
                         GitHub

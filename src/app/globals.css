@@ -438,6 +438,10 @@
     --pill-fg: #0b5d66;
     --pill-bg: #d6f3f6;
   }
+  .pill[data-kind="own"] {
+    --pill-fg: #5a3d00;
+    --pill-bg: #fff1c9;
+  }
   .pill[data-kind="tag"] {
     --pill-fg: var(--c-ink-2);
     --pill-bg: var(--c-paper-2);
@@ -542,8 +546,13 @@
     position: absolute;
     inset: 0;
     overflow: hidden;
-    background: radial-gradient(1200px 700px at 78% 70%, #14245a 0%, transparent 60%),
-      radial-gradient(900px 600px at 12% 8%, #0e2a3a 0%, transparent 55%), var(--c-desk);
+    background: #0b1633;
+  }
+  .wallpaper[data-wallpaper="dusk"] {
+    background: #070b24;
+  }
+  .wallpaper[data-wallpaper="teal"] {
+    background: #0f7f86;
   }
   .wallpaper svg {
     position: absolute;

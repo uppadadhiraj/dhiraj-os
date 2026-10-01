@@ -21,12 +21,12 @@ export const resume = {
     { title: "Intermediate (MPC)", place: "Resonance Junior College, Hyderabad", years: "2021 – 2023" },
   ],
   skills: [
-    { label: "Languages", items: "Python, TypeScript/JavaScript, Java, SQL, HTML/CSS, C" },
+    { label: "Languages", items: "Python, Java, SQL, C" },
     { label: "AI / ML", items: "Machine learning, NLP, RAG, AI agents, computer vision, scikit-learn, LangChain, Ollama, OpenCV" },
     { label: "Backend", items: "FastAPI, Django, SQLAlchemy, REST API design" },
-    { label: "Frontend", items: "React, Next.js, Tailwind CSS, Streamlit" },
+    { label: "Frontend", items: "Streamlit" },
     { label: "Data", items: "PostgreSQL, MySQL, SQLite, ChromaDB, pandas, NumPy" },
-    { label: "Tools", items: "Git & GitHub, Docker, Playwright, pytest" },
+    { label: "Tools", items: "Git & GitHub, Docker, Playwright, pytest, Claude Code (AI-assisted development)" },
   ],
   projects: [
     {

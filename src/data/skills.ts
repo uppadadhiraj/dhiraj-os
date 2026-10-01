@@ -21,10 +21,8 @@ export const skillGroups: SkillGroup[] = [
     group: "Languages",
     skills: [
       used("Python", "verascope", "scoutlens", "study-buddy", "fake-news-predictor", "ai-analytics"),
-      used("TypeScript", "scarflow", "verascope"),
       used("Java", "student-management-system"),
       used("SQL", "job-application-tracker", "scarflow", "verascope"),
-      used("JavaScript / HTML / CSS", "student-management-system", "scarflow"),
       familiar("C"),
     ],
   },
@@ -53,12 +51,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     group: "Frontend",
-    skills: [
-      used("React", "verascope", "scarflow"),
-      used("Next.js", "scarflow"),
-      used("Tailwind CSS", "scarflow", "verascope"),
-      used("Streamlit", "scoutlens", "study-buddy", "fake-news-predictor", "ai-analytics"),
-    ],
+    skills: [used("Streamlit", "study-buddy", "fake-news-predictor", "interview-coach", "ai-analytics", "iris-predictor", "movie-recommendations")],
   },
   {
     group: "Data",
@@ -76,7 +69,8 @@ export const skillGroups: SkillGroup[] = [
     group: "Tools",
     skills: [
       used("Docker", "verascope"),
-      used("Git & GitHub", "verascope"),
+      used("Git & GitHub", "study-buddy", "fake-news-predictor", "interview-coach"),
+      used("Claude Code (AI-assisted development)", "verascope", "scoutlens", "scarflow"),
       used("Ollama", "study-buddy", "interview-coach", "ai-analytics", "verascope"),
       used("LangChain", "study-buddy", "interview-coach", "ai-analytics"),
       used("Playwright / pytest", "scarflow", "scoutlens", "verascope"),

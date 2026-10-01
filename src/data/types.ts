@@ -1,10 +1,11 @@
 export type Status = "LIVE" | "DEMO" | "LOCAL ONLY" | "HARDWARE" | "EXPERIMENTAL" | "ARCHIVED";
 
 /**
- * How a project was developed. Only `ai-assisted` is ever asserted from evidence
- * (commit trailers, README disclosures). `unconfirmed` means the repository has no
- * markers either way and the owner has not yet confirmed — the UI never claims
- * manual authorship for it.
+ * How a project was developed, as stated by the owner:
+ *  - `ai-assisted`: built with an AI coding tool (Claude Code / an LLM did much of the writing).
+ *  - `hand-built`: written by the owner, who sometimes asked an LLM for help when stuck. Never
+ *    present this as "100% written by me" — the badge and devNote say so.
+ *  - `unconfirmed`: not yet known; the UI claims nothing either way.
  */
 export type Development = "ai-assisted" | "hand-built" | "unconfirmed";
 

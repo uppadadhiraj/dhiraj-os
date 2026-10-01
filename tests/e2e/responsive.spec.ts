@@ -25,7 +25,7 @@ for (const vp of VIEWPORTS) {
       for (const [label, id] of [
         ["Projects", "projects"],
         ["Terminal", "terminal"],
-        ["STACK.exe", "stack"],
+        ["Skills", "skills"],
         ["GitHub", "github"],
       ] as const) {
         await showDesktop(page); // icons can sit behind open windows on small screens

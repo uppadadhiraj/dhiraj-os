@@ -30,13 +30,43 @@ describe("project data integrity (no fabricated or dangling claims)", () => {
     }
   });
 
-  it("self-hosted demos (/demos/…) point at a bundle that exists in public/", () => {
-    for (const p of projects)
-      if (p.demo.url?.startsWith("/demos/")) {
-        const file = resolve(process.cwd(), "public", p.demo.url.replace(/^\//, ""));
-        expect(existsSync(file), `${p.slug}: ${p.demo.url}`).toBe(true);
-        expect(existsSync(resolve(file, "..", "app")), `${p.slug}: app files`).toBe(true);
+  it("DEMO on a smaller repository needs an embed demo, and an embed demo needs DEMO", () => {
+    for (const o of otherProjects) {
+      if (o.status === "DEMO") {
+        expect(o.demo?.kind, `${o.slug} claims DEMO`).toBe("embed");
+        expect(o.demo?.url, `${o.slug} needs a URL`).toMatch(/^(https:\/\/|\/demos\/)/);
+        expect(o.exe, `${o.slug} needs a window title`).toBeTruthy();
       }
+      if (o.demo?.kind === "embed") expect(o.status, `${o.slug} has a demo`).toBe("DEMO");
+    }
+  });
+
+  it("self-hosted demos (/demos/…) point at a bundle that exists in public/", () => {
+    const withDemo = [...projects.map((p) => ({ slug: p.slug, url: p.demo.url })), ...otherProjects.map((o) => ({ slug: o.slug, url: o.demo?.url }))];
+    for (const { slug, url } of withDemo)
+      if (url?.startsWith("/demos/")) {
+        const file = resolve(process.cwd(), "public", url.replace(/^\//, ""));
+        expect(existsSync(file), `${slug}: ${url}`).toBe(true);
+        expect(existsSync(resolve(file, "..", "app")), `${slug}: app files`).toBe(true);
+      }
+  });
+
+  it("every demo window has a distinct bundle", () => {
+    const urls = [...projects.map((p) => p.demo.url), ...otherProjects.map((o) => o.demo?.url)].filter(Boolean);
+    expect(new Set(urls).size).toBe(urls.length);
+  });
+
+  it("AI-assisted is exactly ScoutLens, SCARFLOW and Verascope (the owner's account); everything else is hand-built", () => {
+    const ai = projects.filter((p) => p.development === "ai-assisted").map((p) => p.slug).sort();
+    expect(ai).toEqual(["scarflow", "scoutlens", "verascope"]);
+    for (const p of projects.filter((x) => x.development === "hand-built")) expect(p.devNote, p.slug).toMatch(/LLM/);
+    expect(projects.some((p) => p.development === "unconfirmed")).toBe(false);
+  });
+
+  it("frontend skills are limited to what the owner says they know (Streamlit)", () => {
+    const names = skillGroups.flatMap((g) => g.skills.map((s) => s.name)).join(" | ");
+    expect(names).not.toMatch(/React|Next\.js|TypeScript|Tailwind|JavaScript|HTML|CSS/);
+    expect(skillGroups.find((g) => g.group === "Frontend")?.skills.map((s) => s.name)).toEqual(["Streamlit"]);
   });
 
   it("embedded demos never point at localhost", () => {

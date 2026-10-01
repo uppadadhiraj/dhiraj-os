@@ -31,6 +31,15 @@ export async function openApp(page: Page, label: string, id: string) {
   await expect(win(page, id)).toBeVisible();
 }
 
+/** Open an app that is not on the desktop: Start → Programs → name (the same path a visitor takes). */
+export async function openFromStart(page: Page, name: string, id: string) {
+  await page.getByRole("button", { name: "Start" }).click();
+  const menu = page.getByRole("menu", { name: "Start menu" });
+  await menu.getByRole("menuitem", { name: "Programs" }).click();
+  await page.getByRole("menu", { name: "Programs" }).getByRole("menuitem", { name, exact: true }).click();
+  await expect(win(page, id)).toBeVisible();
+}
+
 /** Minimise everything so the desktop icons are reachable (taskbar button on laptops, Home buttons on phones). */
 export async function showDesktop(page: Page) {
   const show = page.getByRole("button", { name: "Show desktop" });

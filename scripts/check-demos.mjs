@@ -1,19 +1,19 @@
 #!/usr/bin/env node
 /**
- * Verifies every project that claims a live/embedded demo (src/data/projects.ts):
+ * Verifies every project (and smaller repository) that claims a live/embedded demo (src/data/projects.ts):
  *   - the URL answers with HTTP 200 (free-tier hosts may need a minute to wake, so it retries)
  *   - the response does not forbid framing (X-Frame-Options DENY/SAMEORIGIN, CSP frame-ancestors 'none'/'self')
  * Also checks the blog embed. Exits 1 if anything fails.
  *   node scripts/check-demos.mjs
  */
-import { projects } from "../src/data/projects.ts";
+import { otherProjects, projects } from "../src/data/projects.ts";
 
 // self-hosted demos (/demos/…) are resolved against the deployed site; SITE_URL overrides it
 const SITE = (process.env.SITE_URL ?? "https://dhiraj-os-rho.vercel.app").replace(/\/$/, "");
 const abs = (u) => (u.startsWith("/") ? SITE + u : u);
 
 const targets = [
-  ...projects
+  ...[...projects, ...otherProjects.filter((o) => o.demo)]
     .filter((p) => p.demo.kind === "embed" && p.demo.url)
     .map((p) => ({ name: p.name, url: abs(p.demo.url), status: p.status, sameOrigin: p.demo.url.startsWith("/") })),
   // the in-browser demos load the Streamlit-in-WebAssembly runtime from this CDN

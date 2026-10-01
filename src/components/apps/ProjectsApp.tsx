@@ -4,6 +4,7 @@ import { useId, useMemo, useState } from "react";
 import { otherProjects, projects } from "@/data/projects";
 import { exploring } from "@/data/profile";
 import { ExtLink, StatusPill, TabPanel, Tabs, Tag } from "@/components/ui";
+import { useWm } from "@/components/os/WindowManager";
 import { PixelIcon } from "@/components/os/PixelIcon";
 import { githubUrl } from "@/lib/links";
 import type { AppProps } from "@/components/os/app-components";
@@ -20,13 +21,14 @@ const TABS = [
 const INTRO: Record<string, string> = {
   featured: "The strongest projects, each written up from reading its source.",
   built:
-    "Projects I built and own. The development method is labelled on each one; a project with no badge has no AI-assistance markers in its repository history.",
+    "Projects I wrote myself (HAND-BUILT). I sometimes asked an LLM for help when I got stuck, but none of them is AI-generated.",
   important:
-    "Projects that matter most to me, including ones I vibe-coded or built with AI assistance — always labelled AI-ASSISTED, with the evidence.",
-  other: "Smaller repositories, coursework and learning projects. Links go to GitHub.",
+    "The larger projects, built with AI coding tools (mainly Claude Code) and always labelled AI-ASSISTED. I designed them and directed the AI; I don't claim to have hand-written the code.",
+  other: "Smaller repositories, coursework and learning projects — all hand-built. Where one can run in your browser, it has a Try it button.",
 };
 
 export function ProjectsApp({ tab, tag }: AppProps) {
+  const { open } = useWm();
   const base = useId().replace(/:/g, "");
   const [active, setActive] = useState(TABS.some((t) => t.id === tab) ? (tab as string) : "featured");
   const [tagFilter, setTagFilter] = useState<string | undefined>(tag);
@@ -92,11 +94,17 @@ export function ProjectsApp({ tab, tag }: AppProps) {
                     </div>
                     <p className="!m-0 text-[13.5px] leading-snug">{o.blurb}</p>
                     {o.note ? <p className="!m-0 text-[12.5px] text-[var(--c-ink-2)]">{o.note}</p> : null}
+                    {o.demo ? <p className="!m-0 text-[12.5px] text-[var(--c-ink-2)]">{o.demo.note}</p> : null}
                     <div className="mt-auto flex flex-wrap items-center gap-1 pt-1">
                       {o.stack.map((s) => (
                         <Tag key={s}>{s}</Tag>
                       ))}
                       <span className="flex-1" />
+                      {o.demo?.kind === "embed" ? (
+                        <button type="button" className="btn btn-primary btn-sm" onClick={() => open(`demo:${o.slug}`)} aria-label={`Try ${o.name}`}>
+                          <PixelIcon name="run" size={14} /> Try it
+                        </button>
+                      ) : null}
                       <ExtLink href={githubUrl(o.repo)!} variant="button" className="btn-sm">
                         GitHub
                       </ExtLink>

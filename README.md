@@ -19,8 +19,10 @@ three rules:
 2. **Statuses are earned.** A project is `LIVE` or `DEMO` only if a deployment was opened and exercised
    (a unit test fails if a status claims otherwise). Everything else says `LOCAL ONLY`, `HARDWARE`,
    `EXPERIMENTAL` or `ARCHIVED`.
-3. **AI assistance is labelled.** `AI-ASSISTED` appears only where the repository itself says so
-   (README disclosure or commit trailers). Projects with no markers are not claimed as "hand-written" either.
+3. **AI assistance is labelled.** ScoutLens, SCARFLOW and Verascope were built with AI coding tools and say
+   `AI-ASSISTED` (their repositories disclose it too). Every other project is `HAND-BUILT` by the owner's account,
+   with the caveat — stated on each one — that an LLM was sometimes asked for help when stuck. This site itself was
+   built with Claude Code from the owner's brief; the owner's own UI tool is Streamlit.
 
 ## Features
 
@@ -111,19 +113,30 @@ BASE_URL=https://dhiraj-os-rho.vercel.app npx playwright test  # full suite, inc
 
 ### Hosted demos (`public/demos/`)
 
-Two projects are Streamlit apps. Rather than run a server (free tiers sleep, and Hugging Face's free tier has no
-Streamlit/Docker option), they are packaged with [stlite](https://github.com/whitphx/stlite) — Streamlit running in
-the visitor's browser on WebAssembly — and served as static files from this site:
+Ten projects run in the visitor's browser. They are Streamlit apps packaged with
+[stlite](https://github.com/whitphx/stlite) — Streamlit on WebAssembly — and served as static files from this site, so
+there is no server, no free-tier sleep and nothing paid. (Hugging Face's free tier has no Streamlit/Docker option.)
 
-| Demo | What the hosted copy does | Source |
+| Demo | What it is | Source |
 | --- | --- | --- |
-| `/demos/scoutlens/` | The real app in `PUBLIC_DEMO` mode: recorded responses for a fictional company, no URL/résumé input, nothing stored, no API key | ScoutLens, branch `feature/public-demo-mode` |
+| `/demos/scoutlens/` | The real app in `PUBLIC_DEMO` mode: recorded responses for a fictional company, nothing stored, no API key | ScoutLens, branch `feature/public-demo-mode` |
 | `/demos/fake-news/` | The real model and app; scores pasted text (a browser cannot fetch other sites' pages) | Fake-News-Predictor, branch `deploy/safe-url-fetch` |
+| `/demos/iris/` | The repository's real app, unmodified | Iris-Predictor |
+| `/demos/movie/` | The repository's real `app.py`, unmodified; its two pickle files are regenerated from the notebook (`demos-src/movie/generate.py` verifies identical recommendations) | Movie-Recommendations |
+| `/demos/heart/`, `titanic/`, `house-price/`, `netflix/` | Interactive Streamlit pages **written with Claude Code** around a notebook's pipeline | Heart-Disease-Predictor, Titanic_Ship_Survival, SCT_ML_1, Netflix-Content-EDA |
+| `/demos/linear-regression/`, `logistic-regression/` | The owner's from-scratch classes copied unchanged into an interactive page written with Claude Code | linear-/logistic-regression-from-scratch |
 
-Each bundle is an `index.html` plus the app's own files under `app/`. The Python runtime (about 10 MB, cached by the
-browser) is loaded from the jsDelivr CDN when a demo window is opened; nothing loads at page load. If the apps change,
-rebuild the bundle from the source repository, update the commit noted in `src/data/projects.ts`, redeploy and rerun the
-two checks above.
+Pages written for this site live in `demos-src/` and say so in an on-page banner. Rebuild any bundle with
+`python scripts/make_stlite.py <name>` (or `all`); it reads the owner's repositories from `DEMO_REPOS`. Each bundle is an
+`index.html` plus the app's files under `app/`. The Python runtime (about 10 MB, cached by the browser) is loaded from the
+jsDelivr CDN when a demo window is opened; nothing loads at page load. After changing a demo, rebuild, update the notes in
+`src/data/projects.ts`, redeploy and rerun the two checks above.
+
+Two stlite quirks the demos work around: scikit-learn's array indexing trips over stlite's stub `pyarrow` (a small shim in
+`demos-src/_common/demo_common.py`), and an extension-less dotfile cannot be served by every static host.
+
+Projects that need a local LLM (Ollama), a database or hardware are not hosted; they say `LOCAL ONLY` / `HARDWARE` and show
+screenshots from real local runs.
 
 ## Notes on honesty and privacy
 

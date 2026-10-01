@@ -1,5 +1,5 @@
 import { profile } from "@/data/profile";
-import { otherProjects, projectBySlug, projects } from "@/data/projects";
+import { demoSubject, otherProjects, projectBySlug, projects, runnableDemos } from "@/data/projects";
 import { skillGroups } from "@/data/skills";
 import { APPS, appById, appByPath } from "@/lib/apps-meta";
 import type { SiteStats } from "@/lib/github-stats";
@@ -108,6 +108,8 @@ export function resolveOpenTarget(name: string): string | null {
   if (projectBySlug(n)) return `project:${n}`;
   const byName = projects.find((p) => p.name.toLowerCase().replace(/\s+/g, "") === n.replace(/\s+/g, ""));
   if (byName) return `project:${byName.slug}`;
+  // a smaller repository that has a demo has no write-up window: open its demo
+  if (otherProjects.some((o) => o.slug === n && o.demo)) return `demo:${n}`;
   const alias: Record<string, string> = {
     run: "playground",
     "run-my-projects": "playground",
@@ -167,7 +169,11 @@ export function execute(raw: string, ctx: TermContext): TermResult {
           out(`${projects.length} projects written up (${ctx.stats.originalRepos} public repos on GitHub):`, "accent"),
           ...projects.map((p) => out(`  ${p.slug.padEnd(w)}${p.status.padEnd(13)}${p.name}`)),
           ...(args.includes("--all") || args.includes("-a")
-            ? [blank(), out("Other repositories:", "accent"), ...otherProjects.map((o) => out(`  ${o.repo}`, "dim"))]
+            ? [
+                blank(),
+                out("Smaller repositories (run <name> opens the ones marked DEMO):", "accent"),
+                ...otherProjects.map((o) => out(`  ${o.slug.padEnd(w + 12)}${o.status.padEnd(13)}${o.name}`, "dim")),
+              ]
             : [out("  (projects --all lists the smaller repositories too)", "dim")]),
           blank(),
           out("open <name> opens one. Example: open scoutlens", "dim"),
@@ -206,13 +212,13 @@ export function execute(raw: string, ctx: TermContext): TermResult {
       };
 
     case "status": {
-      const live = projects.filter((p) => p.status === "LIVE" || p.status === "DEMO").length;
+      const live = runnableDemos().length;
       return {
         lines: [
           out("DhirajOS status", "accent"),
           out(`  system        online`),
           out(`  uptime        ${Math.max(1, Math.round(ctx.uptimeMs / 1000))}s in this terminal`),
-          out(`  projects      ${projects.length} written up, ${live} with a live or demo deployment`),
+          out(`  projects      ${projects.length} written up, ${live} demos you can run in the browser`),
           out(`  github        ${ctx.stats.originalRepos} public repos (snapshot ${ctx.stats.generatedAt.slice(0, 10)})`),
           out(`  sound         see the speaker in the tray`, "dim"),
         ],
@@ -224,7 +230,8 @@ export function execute(raw: string, ctx: TermContext): TermResult {
         ["OS", "DhirajOS"],
         ["Role", profile.role],
         ["Location", "Hyderabad"],
-        ["Languages", "Python, Java, SQL, TypeScript"],
+        ["Languages", "Python, Java, SQL"],
+        ["UI", "Streamlit"],
         ["Focus", "AI / Backend / GenAI"],
         ["Projects", `${ctx.stats.originalRepos} public repos · ${projects.length} written up`],
         ["GitHub", `github.com/${profile.github.user}`],
@@ -273,8 +280,8 @@ export function execute(raw: string, ctx: TermContext): TermResult {
 
     case "run": {
       if (!rest) return { lines: [out("usage: run <project>", "err")] };
-      const p = projectBySlug(rest.toLowerCase());
-      if (!p) return { lines: [out(`404: project not found: ${rest}`, "err")] };
+      const p = demoSubject(rest.toLowerCase().replace(/\.exe$/, ""));
+      if (!p) return { lines: [out(`404: project not found: ${rest}`, "err"), out("projects --all lists every name", "dim")] };
       if (p.demo.kind === "embed" && p.demo.url)
         return { lines: [out(`Launching ${p.exe} …`, "ok")], effects: [{ type: "open", target: `demo:${p.slug}` }] };
       return {

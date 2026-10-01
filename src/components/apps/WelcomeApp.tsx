@@ -1,7 +1,7 @@
 "use client";
 
 import { profile, exploring } from "@/data/profile";
-import { projects } from "@/data/projects";
+import { projects, runnableDemos } from "@/data/projects";
 import { useWm } from "@/components/os/WindowManager";
 import { useSiteStats } from "@/components/os/SiteContext";
 import { PixelIcon } from "@/components/os/PixelIcon";
@@ -40,10 +40,11 @@ export function WelcomeApp() {
         </button>
       </div>
 
-      <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3" role="list" aria-label="At a glance">
+      <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-4" role="list" aria-label="At a glance">
         {[
           { k: `${stats.originalRepos}`, v: "public repositories", sub: "counted from the GitHub API" },
           { k: `${projects.length}`, v: "projects written up", sub: "from reading the source" },
+          { k: `${runnableDemos().length}`, v: "demos you can try", sub: "running in your browser" },
           { k: `${stats.languages.length}`, v: "primary languages", sub: "across those repositories" },
         ].map((s) => (
           <div key={s.v} role="listitem" className="panel p-3">

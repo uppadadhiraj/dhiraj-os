@@ -62,3 +62,94 @@ test.describe("hosted demos run the real apps in the browser", () => {
     await expect(w.getByRole("link", { name: /Open full application/ })).toHaveAttribute("href", "/demos/fake-news/index.html");
   });
 });
+
+/**
+ * The smaller repositories' demos. Each is opened from the Projects window's "Other" tab (Try it), then one real
+ * interaction is checked against values the notebooks themselves produce.
+ */
+async function tryIt(page: Page, name: string, slug: string): Promise<FrameLocator> {
+  await visit(page);
+  await openApp(page, "Projects", "projects");
+  await win(page, "projects").getByRole("tab", { name: "Other" }).click();
+  await win(page, "projects").getByRole("button", { name: `Try ${name}` }).click();
+  await settled(page, `demo:${slug}`);
+  return win(page, `demo:${slug}`).frameLocator("iframe");
+}
+
+test.describe("notebook and small-app demos", () => {
+  test("Iris Predictor: the repo's own app answers (grid cell, read through the accessible table)", async ({ page }) => {
+    const app = await tryIt(page, "Iris Predictor", "iris-predictor");
+    await expect(app.getByRole("heading", { name: "Iris type" })).toBeVisible({ timeout: 180_000 });
+    for (const [label, value] of [["SepalLengthCm :", "5.1"], ["SepalWidthCm :", "3.5"], ["PetalLengthCm :", "1.4"], ["PetalWidthCm :", "0.2"]]) {
+      await app.getByLabel(label).fill(value);
+      await app.getByLabel(label).press("Enter");
+      await page.waitForTimeout(600);
+    }
+    await page.waitForTimeout(1000);
+    await app.getByRole("button", { name: "Predict" }).click();
+    await expect(app.locator("[data-testid=stDataFrame] [role=gridcell]").first()).toHaveText("Iris-setosa", { timeout: 60_000 });
+  });
+
+  test("Movie Recommender: Batman gives the five titles the notebook printed", async ({ page }) => {
+    const app = await tryIt(page, "Movie Recommender", "movie-recommendations");
+    await expect(app.getByRole("heading", { name: "Movie Recommender" })).toBeVisible({ timeout: 180_000 });
+    const box = app.getByRole("combobox").first();
+    await box.click();
+    await box.fill("Batman");
+    await page.keyboard.press("Enter");
+    await page.waitForTimeout(800);
+    await app.getByRole("button", { name: "Recommend Movie" }).click();
+    for (const title of ["Batman & Robin", "The Dark Knight Rises", "Batman Begins", "Batman Returns"]) {
+      await expect(app.getByText(title, { exact: true })).toBeVisible({ timeout: 60_000 });
+    }
+  });
+
+  test("Heart Disease Predictor: trains in the browser, predicts, and states its own accuracy", async ({ page }) => {
+    const app = await tryIt(page, "Heart Disease Predictor", "heart-disease-predictor");
+    await expect(app.getByRole("heading", { name: "Heart Disease Predictor" })).toBeVisible({ timeout: 180_000 });
+    await expect(app.getByText(/The notebook is mine; this Streamlit page was written with Claude Code/)).toBeVisible();
+    await app.getByRole("button", { name: "Predict" }).click();
+    await expect(app.getByText(/Predicted class 0: no heart disease/)).toBeVisible({ timeout: 60_000 });
+    await app.getByText("How good is this model?").click();
+    await expect(app.getByText(/56\.5%/)).toBeVisible();
+  });
+
+  test("Titanic: 891 passengers, 342 survivors", async ({ page }) => {
+    const app = await tryIt(page, "Titanic Survival Analysis", "titanic-ship-survival");
+    await expect(app.getByRole("heading", { name: "Titanic Survival Analysis" })).toBeVisible({ timeout: 180_000 });
+    await expect(app.getByText("891", { exact: true })).toBeVisible({ timeout: 60_000 });
+    await expect(app.getByText("342", { exact: true })).toBeVisible();
+    await expect(app.getByText("38.4%", { exact: true })).toBeVisible();
+  });
+
+  test("House price (SCT_ML_1): R² 0.658 as in the notebook", async ({ page }) => {
+    const app = await tryIt(page, "House Price · Linear Regression", "sct-ml-1");
+    await expect(app.getByText("Estimated sale price")).toBeVisible({ timeout: 180_000 });
+    await expect(app.getByText("0.658", { exact: true })).toBeVisible();
+    await expect(app.getByText("$169,595", { exact: true })).toBeVisible();
+  });
+
+  test("Netflix EDA: cleaned catalogue counts and the title browser", async ({ page }) => {
+    const app = await tryIt(page, "Netflix Content EDA", "netflix-content-eda");
+    await expect(app.getByRole("heading", { name: "Netflix content explorer" })).toBeVisible({ timeout: 180_000 });
+    await expect(app.getByText("7,770", { exact: true })).toBeVisible({ timeout: 90_000 });
+    await app.getByRole("tab", { name: "Browse titles" }).click();
+    await expect(app.getByText(/titles match/)).toBeVisible();
+  });
+
+  test("Linear regression from scratch: reproduces the notebook's w = 9,514 and b = 23,697", async ({ page }) => {
+    const app = await tryIt(page, "Linear Regression from Scratch", "linear-regression-from-scratch");
+    await expect(app.getByText("Weight w")).toBeVisible({ timeout: 180_000 });
+    await expect(app.getByText("9,514", { exact: true })).toBeVisible();
+    await expect(app.getByText("23,697", { exact: true })).toBeVisible();
+  });
+
+  test("Logistic regression from scratch: reproduces the notebook's accuracies", async ({ page }) => {
+    const app = await tryIt(page, "Logistic Regression from Scratch", "logistic-regression-from-scratch");
+    await expect(app.getByText("Accuracy on test data")).toBeVisible({ timeout: 180_000 });
+    await expect(app.getByText("0.777", { exact: true })).toBeVisible();
+    await expect(app.getByText("0.766", { exact: true })).toBeVisible();
+    await app.getByRole("button", { name: "Predict" }).click();
+    await expect(app.getByText("The person is diabetic")).toBeVisible({ timeout: 30_000 });
+  });
+});

@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
-import { desktopIcon, openApp, visit, win } from "./helpers";
+import { desktopIcon, openApp, openFromStart, visit, win } from "./helpers";
 
 /**
  * Any violation fails the test (all impact levels). Axe's "incomplete" list is also checked,
@@ -30,10 +30,6 @@ test.describe("accessibility (axe: WCAG 2.1 A/AA + best practices, all impacts)"
     ["Skills", "skills"],
     ["Contact", "contact"],
     ["Terminal", "terminal"],
-    ["STACK.exe", "stack"],
-    ["JOURNEY.exe", "journey"],
-    ["HOW I BUILD.exe", "howibuild"],
-    ["My Computer", "sysinfo"],
     ["GitHub", "github"],
     ["Resume", "resume"],
     ["RUN MY PROJECTS.exe", "playground"],
@@ -42,6 +38,20 @@ test.describe("accessibility (axe: WCAG 2.1 A/AA + best practices, all impacts)"
     test(`${id} window`, async ({ page }) => {
       await visit(page);
       await openApp(page, label, id);
+      expect(await serious(page)).toEqual([]);
+    });
+  }
+
+  // not on the desktop: opened from Start -> Programs, as a visitor would
+  for (const [label, id] of [
+    ["STACK", "stack"],
+    ["JOURNEY", "journey"],
+    ["HOW I BUILD", "howibuild"],
+    ["System Info", "sysinfo"],
+  ] as const) {
+    test(`${id} window (from Start)`, async ({ page }) => {
+      await visit(page);
+      await openFromStart(page, label, id);
       expect(await serious(page)).toEqual([]);
     });
   }

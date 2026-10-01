@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { closeAll, desktopIcon, dragBy, openApp, settled, visit, win } from "./helpers";
+import { closeAll, desktopIcon, dragBy, openApp, openFromStart, settled, visit, win } from "./helpers";
 
 test.describe("boot sequence", () => {
   test("first visit shows a skippable boot screen, returning visit skips it", async ({ page }) => {
@@ -26,11 +26,12 @@ test.describe("boot sequence", () => {
 });
 
 test.describe("desktop and window manager", () => {
-  test("desktop shows the brief's icons and the taskbar", async ({ page }) => {
+  test("desktop shows a short list of icons (the rest live in Start → Programs) and the taskbar", async ({ page }) => {
     const errors = await visit(page);
-    for (const label of ["My Computer", "Projects", "GitHub", "About Me", "Resume", "Contact", "Terminal", "RUN MY PROJECTS.exe", "STACK.exe", "JOURNEY.exe"]) {
-      await expect(desktopIcon(page, label)).toBeVisible();
-    }
+    const labels = ["RUN MY PROJECTS.exe", "Projects", "About Me", "Skills", "Resume", "GitHub", "Contact", "Terminal", "Recycle Bin"];
+    for (const label of labels) await expect(desktopIcon(page, label)).toBeVisible();
+    await expect(page.locator("nav[aria-label='Desktop applications'] a.desk-icon")).toHaveCount(labels.length);
+    for (const gone of ["My Computer", "STACK.exe", "JOURNEY.exe", "HOW I BUILD.exe", "DHIRAJ.LOG"]) await expect(desktopIcon(page, gone)).toHaveCount(0);
     await expect(page.getByRole("toolbar", { name: "Taskbar" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Start" })).toBeVisible();
     expect(errors).toEqual([]);
@@ -131,11 +132,22 @@ test.describe("desktop and window manager", () => {
   test("keyboard: desktop icons are reachable and open with Enter", async ({ page }) => {
     await visit(page);
     await closeAll(page);
-    await desktopIcon(page, "My Computer").focus();
+    await desktopIcon(page, "RUN MY PROJECTS.exe").focus();
     await page.keyboard.press("ArrowDown");
     await expect(desktopIcon(page, "Projects")).toBeFocused();
     await page.keyboard.press("Enter");
     await expect(win(page, "projects")).toBeVisible();
+  });
+
+  test("wallpaper defaults to the dusk scene, can be changed in System Info, and is remembered", async ({ page }) => {
+    await visit(page);
+    const wallpaper = page.locator(".wallpaper");
+    await expect(wallpaper).toHaveAttribute("data-wallpaper", "dusk");
+    await openFromStart(page, "System Info", "sysinfo");
+    await win(page, "sysinfo").getByRole("radio", { name: "Classic teal" }).check();
+    await expect(wallpaper).toHaveAttribute("data-wallpaper", "teal");
+    await page.reload();
+    await expect(page.locator(".wallpaper")).toHaveAttribute("data-wallpaper", "teal");
   });
 
   test("sound toggle is muted by default and toggles", async ({ page }) => {
@@ -262,7 +274,7 @@ test.describe("other apps", () => {
 
   test("STACK map highlights connections on selection", async ({ page }) => {
     await visit(page);
-    await openApp(page, "STACK.exe", "stack");
+    await openFromStart(page, "STACK", "stack");
     const s = win(page, "stack");
     await s.getByRole("button", { name: /FastAPI.*Used in 2 projects/ }).click();
     await expect(s.getByText("Python → FastAPI")).toBeVisible();
@@ -309,7 +321,7 @@ test.describe("other apps", () => {
 
   test("Journey is built from GitHub dates and does not invent employment", async ({ page }) => {
     await visit(page);
-    await openApp(page, "JOURNEY.exe", "journey");
+    await openFromStart(page, "JOURNEY", "journey");
     const j = win(page, "journey");
     await expect(j.getByText("GitHub account created")).toBeVisible();
     await expect(j.getByText(/don.t have formal employment/)).toBeVisible();
@@ -317,7 +329,7 @@ test.describe("other apps", () => {
 
   test("Blog window embeds the real blog in a sandboxed iframe", async ({ page }) => {
     await visit(page);
-    await openApp(page, "DHIRAJ.LOG", "blog");
+    await openFromStart(page, "DHIRAJ.LOG", "blog");
     const frame = win(page, "blog").locator("iframe");
     await expect(frame).toHaveAttribute("src", "https://uppadadhiraj.github.io/");
     await expect(frame).toHaveAttribute("sandbox", /allow-scripts/);
