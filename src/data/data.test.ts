@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { otherProjects, projects } from "./projects";
 import { skillGroups } from "./skills";
@@ -54,6 +56,14 @@ describe("project data integrity (no fabricated or dangling claims)", () => {
       expect(p.problem && p.solution && p.features?.length && p.howItWorks?.length && p.architecture?.length, p.slug).toBeTruthy();
       expect(p.contribution, p.slug).toBeTruthy();
     }
+  });
+
+  it("every screenshot file exists and has alt text and, where it came from a real run, a caption", () => {
+    for (const p of projects)
+      for (const s of p.screenshots ?? []) {
+        expect(existsSync(resolve(process.cwd(), "public", s.src.replace(/^\//, ""))), `${p.slug}: ${s.src}`).toBe(true);
+        expect(s.alt.length, `${p.slug}: ${s.src} alt`).toBeGreaterThan(15);
+      }
   });
 
   it("4–6 featured projects", () => {

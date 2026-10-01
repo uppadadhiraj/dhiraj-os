@@ -90,6 +90,11 @@ export const projects: Project[] = [
         detail:
           "A FastAPI lifespan hook (core/reconcile.py, unit-tested) marks anything left mid-job by a previous process as FAILED with a specific message.",
       },
+      {
+        title: "Grounding helps, but a small model still embellishes",
+        detail:
+          "In my local run the chat attached real file citations to its answer, yet llama3.1:8b also asserted that several classes were “not defined anywhere” when they are. The README names this exact weakness; the citations are what let you catch it.",
+      },
     ],
     future: [
       "Function-level call graph (today the graph shows imports between files)",
@@ -102,12 +107,36 @@ export const projects: Project[] = [
       { label: "Tests", value: "41 backend test functions in 9 files, plus a CI workflow" },
       { label: "Agents", value: "17 modules in backend/app/agents" },
       { label: "Verification log", value: "4 documented passes — 12 bugs fixed in passes 1–2" },
+      { label: "Local run", value: "ScoutLens (93 files, 417 import edges) ingested from its GitHub URL in about 2 minutes (2026-10-01)" },
+    ],
+    screenshots: [
+      {
+        src: "/projects/verascope/overview.webp",
+        alt: "Verascope repository overview for ScoutLens: purpose, languages, entry point, database, test framework, and Facts / Inferences / Uncertain columns",
+        caption: "Overview of a real repository (ScoutLens). Facts, inferences and uncertainties are kept in separate columns.",
+      },
+      {
+        src: "/projects/verascope/graph.webp",
+        alt: "Verascope interactive dependency graph of 93 files and 417 import relationships, with test files in green",
+        caption: "The import graph Verascope built for ScoutLens: 93 files, 417 import relationships.",
+      },
+      {
+        src: "/projects/verascope/security.webp",
+        alt: "Verascope security scan listing a high-severity SQL injection pattern in a test file with the matched code and a suggested fix",
+        caption: "A pattern-based finding with the matched line and a suggested fix. This one is in a test file — the README lists test-code false positives as a known limitation.",
+      },
+      {
+        src: "/projects/verascope/chat.webp",
+        alt: "Verascope repository chat answering a question about the SerpApi client, with cited source files listed underneath",
+        caption: "Chat with cited sources. The model's extra commentary here contains wrong “not defined” claims — answer quality depends on the local model (see Engineering).",
+      },
     ],
     demo: {
       kind: "none",
-      note: "Needs PostgreSQL (Docker), Ollama and a Docker sandbox, so it is not hosted. It runs locally.",
+      note: "Needs PostgreSQL (Docker), Ollama and a Docker sandbox, so it is not hosted. The screenshots come from a real local run.",
     },
-    verification: "Source, tests and verification log read on 2026-09-30.",
+    verification:
+      "Run locally on 2026-10-01 (Python 3.11, Postgres 16 in Docker, Ollama llama3.1:8b): migrations applied, the UI registered a user, ingested a real GitHub repository (scan, embed, ready in about 2 minutes), and the overview, dependency graph, explorer and security scan worked; chat returned cited sources in about 22 s. Not exercised: the debug → fix → sandbox → PR pipeline.",
     needs: ["Docker Desktop (PostgreSQL + code sandbox)", "Ollama with llama3.1:8b", "Python 3.11/3.12 and Node 20+"],
     runLocally: [
       "git clone https://github.com/uppadadhiraj/verascope-ai.git && cd verascope-ai",
@@ -794,15 +823,34 @@ export const projects: Project[] = [
       ["pandas DataFrame"],
     ],
     contribution:
-      "Sole committer on the repository (4 commits, 2026-08-25 → 2026-08-30). Note: my resume mentions PydanticAI for this project, but the repository uses LangChain's agent and no PydanticAI dependency, so this write-up follows the code.",
+      "Sole committer on the repository (4 commits, 2026-08-25 → 2026-08-30). What it implements: the CSV/Excel loaders, the 12 tools, the LangChain agent wiring and the Streamlit interface, as committed.",
+    challenges: [
+      {
+        title: "Numbers come from tools, but the prose around them can drift",
+        detail:
+          "The average SepalLengthCm came back as 5.843333333333334, identical to pandas, because the agent called a tool instead of estimating. For a chart request the chart itself was correct, yet the 4B model's accompanying text wandered into an unrelated scikit-learn example. Tool results are trustworthy; free-form narration from a small local model is not.",
+      },
+    ],
     future: [
       "Add tests for the tools and a fixed evaluation question set",
+      "Show only the tool result for chart requests, or constrain the narration",
       "Support multiple files / joins",
       "Show which tool calls produced each answer",
     ],
-    facts: [{ label: "Tools", value: "12 (5 data · 3 statistics · 4 chart)" }],
-    demo: { kind: "none", note: "Needs a local Qwen3 model through Ollama, so it is not hosted." },
-    verification: "Source read on 2026-09-30; local run recorded below when done.",
+    facts: [
+      { label: "Tools", value: "12 (5 data · 3 statistics · 4 chart)" },
+      { label: "Local run", value: "average question answered in about 33 s; histogram in about 59 s (2026-10-01)" },
+    ],
+    screenshots: [
+      {
+        src: "/projects/ai-analytics/answer.webp",
+        alt: "AI Analytics Agent with Iris.csv loaded and the answer to what the average SepalLengthCm is",
+        caption: "Real output from a local run on the Iris dataset (2026-10-01); the value matches pandas.",
+      },
+    ],
+    demo: { kind: "none", note: "Needs a local Qwen3 model through Ollama, so it is not hosted. The screenshot comes from a real local run." },
+    verification:
+      "Run locally on 2026-10-01 (Python 3.11, Ollama qwen3:4b, Iris.csv): the file loads, the average question returned 5.843333333333334 (matches pandas), and a histogram request rendered a real Plotly chart; no console errors.",
     needs: ["Python 3.11+", "Ollama with qwen3:4b"],
     runLocally: [
       "git clone https://github.com/uppadadhiraj/AI-Analytics.git && cd AI-Analytics",
