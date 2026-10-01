@@ -37,7 +37,7 @@ export const APPS: AppMeta[] = [
   { id: "welcome", title: "Welcome.exe", icon: "welcome", size: { w: 720, h: 600 }, path: "welcome", start: "programs", blurb: "Start here" },
   { id: "built", title: "Built Projects.exe", icon: "folder", size: { w: 980, h: 660 }, path: "built", start: "programs", blurb: "Projects I engineered", props: { tab: "built" } },
   { id: "important", title: "Important Projects.exe", icon: "folder", size: { w: 980, h: 660 }, path: "important", start: "programs", blurb: "Projects that matter to me, including AI-assisted ones", props: { tab: "important" } },
-  { id: "recycle", title: "Recycle Bin", icon: "bin", size: { w: 560, h: 420 }, path: "recycle-bin", desktop: { label: "Recycle Bin" }, blurb: "Nothing to see here. Probably." },
+  { id: "recycle", title: "Recycle Bin", icon: "bin", size: { w: 560, h: 420 }, path: "recycle-bin", blurb: "Nothing to see here. Probably." },
   { id: "hidden", title: "DhirajOS.exe", icon: "lock", size: { w: 780, h: 580 }, path: "dhirajos", blurb: "Hidden project: this portfolio" },
 ];
 

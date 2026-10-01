@@ -33,7 +33,6 @@ test.describe("accessibility (axe: WCAG 2.1 A/AA + best practices, all impacts)"
     ["GitHub", "github"],
     ["Resume", "resume"],
     ["RUN MY PROJECTS.exe", "playground"],
-    ["Recycle Bin", "recycle"],
   ] as const) {
     test(`${id} window`, async ({ page }) => {
       await visit(page);

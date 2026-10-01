@@ -28,10 +28,10 @@ test.describe("boot sequence", () => {
 test.describe("desktop and window manager", () => {
   test("desktop shows a short list of icons (the rest live in Start → Programs) and the taskbar", async ({ page }) => {
     const errors = await visit(page);
-    const labels = ["RUN MY PROJECTS.exe", "Projects", "About Me", "Skills", "Resume", "GitHub", "Contact", "Terminal", "Recycle Bin"];
+    const labels = ["RUN MY PROJECTS.exe", "Projects", "About Me", "Skills", "Resume", "GitHub", "Contact", "Terminal"];
     for (const label of labels) await expect(desktopIcon(page, label)).toBeVisible();
     await expect(page.locator("nav[aria-label='Desktop applications'] a.desk-icon")).toHaveCount(labels.length);
-    for (const gone of ["My Computer", "STACK.exe", "JOURNEY.exe", "HOW I BUILD.exe", "DHIRAJ.LOG"]) await expect(desktopIcon(page, gone)).toHaveCount(0);
+    for (const gone of ["Recycle Bin", "My Computer", "STACK.exe", "JOURNEY.exe", "HOW I BUILD.exe", "DHIRAJ.LOG"]) await expect(desktopIcon(page, gone)).toHaveCount(0);
     await expect(page.getByRole("toolbar", { name: "Taskbar" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Start" })).toBeVisible();
     expect(errors).toEqual([]);
@@ -367,8 +367,7 @@ test.describe("easter eggs and error states", () => {
   });
 
   test("Recycle Bin restores the hidden project", async ({ page }) => {
-    await visit(page);
-    await openApp(page, "Recycle Bin", "recycle");
+    await visit(page, "/recycle-bin"); // no desktop icon any more; the easter egg is reached by URL or `open recycle-bin`
     await win(page, "recycle").getByRole("button", { name: /definitely_not_a_project/ }).click();
     await win(page, "recycle").getByRole("button", { name: "Restore and run" }).click();
     await expect(win(page, "hidden")).toBeVisible();
