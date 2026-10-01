@@ -24,11 +24,11 @@ def _patch_pyarrow() -> None:
 _patch_pyarrow()
 
 
-def banner(repo: str, notebook: str, what: str = "the notebook's code") -> None:
-    """Say plainly what is whose: the notebook is the owner's; this Streamlit page around it was written with Claude Code."""
+def banner(repo: str, source: str, what: str = "the original code") -> None:
+    """Say plainly what is whose: the original code is the owner's; this Streamlit page around it was written with Claude Code."""
     st.info(
-        f"**Interactive demo.** It uses {what} from the notebook "
-        f"[{notebook}]({OWNER}/{repo}) in the **{repo}** repository. The notebook is mine; this Streamlit page was "
-        "written with Claude Code so the notebook can be tried in a browser. It runs entirely in your tab: nothing you type is uploaded.",
+        f"**Interactive demo.** It uses {what} from "
+        f"[{source}]({OWNER}/{repo}) in the **{repo}** repository. The original code is mine; this Streamlit page was "
+        "written with Claude Code so it can be tried in a browser. It runs entirely in your tab: nothing you type is uploaded.",
         icon="ℹ️",
     )

@@ -57,6 +57,16 @@ test.describe("hosted demos run the real apps in the browser", () => {
     await expect(app.getByText(/Not enough text to score/)).toBeVisible({ timeout: 60_000 });
   });
 
+  test("RainFogHaze: dehazes the repository's sample photo; the fog level re-renders the guided image", async ({ page }) => {
+    const app = await launch(page, "RainFogHaze", "rainfoghaze");
+    await expect(app.getByRole("heading", { name: /RainFogHaze/ })).toBeVisible({ timeout: 180_000 });
+    await expect(app.getByText(/Guided by the fog level 'high' \(strength 0\.95\)/)).toBeVisible({ timeout: 120_000 });
+    await expect(app.locator("[data-testid=stImage] img")).toHaveCount(3);
+    await app.getByRole("slider").first().focus();
+    await page.keyboard.press("Home");
+    await expect(app.getByText(/Guided by the fog level 'low' \(strength 0\.75\)/)).toBeVisible({ timeout: 120_000 });
+  });
+
   test("the window offers the same app full-size in a new tab", async ({ page }) => {
     await launch(page, "Fake News Predictor", "fake-news-predictor");
     const w = win(page, "demo:fake-news-predictor");
@@ -109,7 +119,7 @@ test.describe("notebook and small-app demos", () => {
   test("Heart Disease Predictor: trains in the browser, predicts, and states its own accuracy", async ({ page }) => {
     const app = await tryIt(page, "Heart Disease Predictor", "heart-disease-predictor");
     await expect(app.getByRole("heading", { name: "Heart Disease Predictor" })).toBeVisible({ timeout: 180_000 });
-    await expect(app.getByText(/The notebook is mine; this Streamlit page was written with Claude Code/)).toBeVisible();
+    await expect(app.getByText(/The original code is mine; this Streamlit page was written with Claude Code/)).toBeVisible();
     await app.getByRole("button", { name: "Predict" }).click();
     await expect(app.getByText(/Predicted class 0: no heart disease/)).toBeVisible({ timeout: 60_000 });
     await app.getByText("How good is this model?").click();

@@ -415,7 +415,7 @@ export const projects: Project[] = [
       "Haze and fog removal with OpenCV's dark-channel prior, where a local vision model (LLaVA) chooses the dehazing strength.",
     category: "built",
     featured: true,
-    status: "LOCAL ONLY",
+    status: "DEMO",
     development: "hand-built",
     devNote: "Built by me. I sometimes asked an LLM for help when I got stuck, but the project is not AI-generated.",
     repo: "RainFogHaze-OpenCV-GenAI",
@@ -480,11 +480,12 @@ export const projects: Project[] = [
       },
     ],
     demo: {
-      kind: "none",
-      note: "The guided mode needs a local LLaVA model through Ollama.",
+      kind: "embed",
+      url: "/demos/rainfoghaze/index.html",
+      note: "The repository's dehazing functions (dark-channel prior, then sharpening), copied unchanged, running in your browser on the repo's sample photo or your own (it never leaves your tab). The LLaVA step that sets the strength needs Ollama, so here you pick the fog level yourself.",
     },
     verification:
-      "Run locally on 2026-09-30: the home page loads (HTTP 200); a non-image upload is rejected with a message; a JPG upload goes through LLaVA (about 12 s) and OpenCV and renders both outputs side by side.",
+      "Run locally on 2026-09-30: the home page loads (HTTP 200); a non-image upload is rejected with a message; a JPG upload goes through LLaVA (about 12 s) and OpenCV and renders both outputs side by side. The hosted copy keeps the dehazing functions and replaces the LLaVA step with a fog-level selector; on the repository's sample photo its three output images matched a native OpenCV run to within one mean pixel level (checked 2026-10-01).",
     needs: ["Python 3.11+", "Ollama with the llava model for guided mode"],
     runLocally: [
       "git clone https://github.com/uppadadhiraj/RainFogHaze-OpenCV-GenAI.git",

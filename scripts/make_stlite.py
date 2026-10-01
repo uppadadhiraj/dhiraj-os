@@ -26,7 +26,7 @@ STLITE = "1.9.2"
 CDN = f"https://cdn.jsdelivr.net/npm/@stlite/browser@{STLITE}/build"
 REPOS = [Path(p) for p in os.environ.get("DEMO_REPOS", "C:/pf/r2;C:/pf/r;C:/pf/spaces").split(";")]
 ANALYSIS_PY = os.environ.get("DEMO_PYTHON", "C:/pf/v/Fake-News-Predictor/Scripts/python.exe")
-INCLUDE = (".py", ".toml", ".pkl", ".csv", ".gitkeep")
+INCLUDE = (".py", ".toml", ".pkl", ".csv", ".gitkeep", ".jpg")
 SKIP_DIRS = {"__pycache__", "tests", "docs", "scripts", ".git", ".idea"}
 
 SCOUTLENS_WRAPPER = '''import os
@@ -72,6 +72,12 @@ TARGETS = {
         copy=[("repo:Movie-Recommendations/app.py", "app.py"), ("own:movie/topsim.py", "topsim.py")],
         generate="movie",
         requirements=["pandas", "numpy"],
+    ),
+    "rainfoghaze": dict(
+        title="RainFogHaze - haze removal",
+        copy=[("own:rainfoghaze", ""), ("own:_common", "")],
+        generate="rain",
+        requirements=["opencv-python", "numpy"],
     ),
     "heart": dict(
         title="Heart Disease Predictor",
@@ -142,6 +148,14 @@ def copy_into(src: Path, dest_root: Path, dest_rel: str, skip_files, files: dict
 
 
 def generate(kind: str, dest_root: Path, files: dict) -> None:
+    if kind == "rain":
+        # the repository's sample photo is a WebP file with no extension; ship it as a JPEG every browser/OpenCV build reads
+        tmp = Path(tempfile.mkdtemp()) / "sample_fog_road.jpg"
+        code = "import sys; from PIL import Image; Image.open(sys.argv[1]).convert('RGB').save(sys.argv[2], quality=88)"
+        subprocess.run([ANALYSIS_PY, "-c", code, str(resolve("repo:RainFogHaze-OpenCV-GenAI/image_convert/fog_road")), str(tmp)], check=True)
+        copy_into(tmp, dest_root, "sample_fog_road.jpg", (), files)
+        shutil.rmtree(tmp.parent)
+        return
     if kind == "movie":
         tmp = Path(tempfile.mkdtemp())
         subprocess.run([ANALYSIS_PY, str(ROOT / "demos-src" / "movie" / "generate.py"), str(resolve("repo:Movie-Recommendations/")), str(tmp)], check=True)
