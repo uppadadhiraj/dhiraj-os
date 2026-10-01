@@ -6,7 +6,9 @@ import { openApp, settled, visit, win } from "./helpers";
  * served from /demos/. The first run downloads the Python runtime from a CDN, so these tests need internet access
  * and are given a generous timeout.
  */
-test.describe.configure({ timeout: 240_000 });
+// Each demo downloads and starts a Python runtime, which is CPU-bound: with several workers loading at once one can
+// run past its timeout, so a single retry is allowed (a demo that is really broken fails twice).
+test.describe.configure({ timeout: 240_000, retries: 1 });
 
 async function launch(page: Page, projectName: string, slug: string): Promise<FrameLocator> {
   await visit(page);
